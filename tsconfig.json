@@ -1,14 +1,17 @@
 {
-  "compilerOptions": {
-    "declaration": true,
-    "importHelpers": true,
-    "module": "commonjs",
-    "outDir": "dist",
-    "rootDir": "src",
-    "strict": true,
-    "target": "es2019"
-  },
-  "include": [
-    "src/**/*"
-  ]
+    "extends": "@baltpeter/tsconfig",
+
+    "compilerOptions": {
+        "noEmit": false,
+
+        "module": "ES2020",
+        "moduleResolution": "node",
+        "outDir": "dist",
+        "rootDir": "src",
+        "target": "es2019"
+    },
+    "include": ["src/**/*"],
+    "ts-node": {
+        "esm": true
+    }
 }
