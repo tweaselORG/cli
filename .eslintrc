@@ -1,6 +1,7 @@
 {
-  "extends": [
-    "oclif",
-    "oclif-typescript"
-  ]
+    "root": true,
+    "extends": ["@baltpeter/eslint-config"],
+    "rules": {
+        "no-console": "error"
+    }
 }

@@ -1,19 +1,19 @@
-import {Command} from '@oclif/core'
+import { Command } from '@oclif/core';
 
 export default class World extends Command {
-  static description = 'Say hello world'
+    static override description = 'Say hello world';
 
-  static examples = [
-    `<%= config.bin %> <%= command.id %>
+    static override examples = [
+        `<%= config.bin %> <%= command.id %>
 hello world! (./src/commands/hello/world.ts)
 `,
-  ]
+    ];
 
-  static flags = {}
+    static override flags = {};
 
-  static args = {}
+    static override args = {};
 
-  async run(): Promise<void> {
-    this.log('hello world! (./src/commands/hello/world.ts)')
-  }
+    async run(): Promise<void> {
+        this.log('hello world! (./src/commands/hello/world.ts)');
+    }
 }
