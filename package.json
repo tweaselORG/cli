@@ -25,10 +25,11 @@
         "/oclif.manifest.json"
     ],
     "scripts": {
-        "build": "shx rm -rf dist && tsc -b",
+        "build": "shx rm -rf dist && tsc -b && oclif manifest ",
+        "dev": "./bin/dev.js",
         "fix": "yarn eslint . --ignore-path .gitignore --ext .js,.jsx,.ts,.tsx --fix",
         "lint": "tsc --noEmit && eslint . --ignore-path .gitignore --ext .js,.jsx,.ts,.tsx && git diff --check",
-        "prepack": "yarn build && oclif manifest && oclif readme",
+        "prepack": "yarn build && oclif readme",
         "test": "echo 'TODO: No tests specified yet.'",
         "posttest": "yarn lint",
         "version": "oclif readme && git add README.md"
@@ -49,12 +50,19 @@
     "prettier": "@baltpeter/prettier-config",
     "dependencies": {
         "@oclif/core": "^2",
-        "@oclif/plugin-help": "^5"
+        "@oclif/plugin-autocomplete": "^2.1.8",
+        "@oclif/plugin-help": "^5",
+        "chalk": "^5.2.0",
+        "cyanoacrylate": "^0.4.0",
+        "listr": "^0.14.3",
+        "terminal-link": "^3.0.0",
+        "trackhar": "^0.1.0"
     },
     "devDependencies": {
         "@baltpeter/eslint-config": "^2.1.2",
         "@baltpeter/prettier-config": "^2.0.0",
         "@baltpeter/tsconfig": "^3.0.0",
+        "@types/listr": "^0.14.4",
         "@types/node": "^18.15.11",
         "@typescript-eslint/eslint-plugin": "^5.57.1",
         "eslint": "^8.38.0",
@@ -73,15 +81,10 @@
     },
     "oclif": {
         "bin": "tweasel",
-        "dirname": "tweasel",
         "commands": "./dist/commands",
         "plugins": [
-            "@oclif/plugin-help"
-        ],
-        "topics": {
-            "hello": {
-                "description": "Say hello to the world and others"
-            }
-        }
+            "@oclif/plugin-help",
+            "@oclif/plugin-autocomplete"
+        ]
     }
 }
