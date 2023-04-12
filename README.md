@@ -8,7 +8,7 @@ The tweasel CLI provides the following commands:
 
 * `record-traffic`: Record the traffic of an Android or iOS app in HAR format.
 
-  The app will be installed and started automatically on the device or emulator. Its traffic will be then recorded for the specified duration and saved as a HAR file at the end. You can either record the traffic of the entire system or only the specified app (default).
+  The app will be installed and started automatically on the device or emulator. Its traffic will be then recorded for the specified duration and saved as a HAR file at the end. You can either record the traffic of the entire system or only the specified app (default on Android, currently unsupported on iOS).
 
   The app can optionally be uninstalled automatically afterwards.
 
@@ -95,8 +95,9 @@ Record the traffic of an Android or iOS app in HAR format.
 USAGE
   $ tweasel record-traffic <APP FILE(S)> [-p android|ios] [-t device|emulator] [--timeout <value>] [-o <value>]
     [--bypass-certificate-pinning] [--all-traffic] [--uninstall-app] [--grant-permissions]
-    [--bypass-tracking-domain-resolution-check] [--emulator-name <value>] [--emulator-snapshot-name <value>]
-    [--emulator-headless] [--emulator-no-audio] [--emulator-ephemeral]
+    [--bypass-tracking-domain-resolution-check] [--ios-ip <value>] [--ios-proxy-ip <value>] [--ios-root-pw <value>]
+    [--emulator-name <value>] [--emulator-snapshot-name <value>] [--emulator-headless] [--emulator-no-audio]
+    [--emulator-ephemeral]
 
 ARGUMENTS
   <APP FILE(S)>  The path to the app to analyze (.ipa on iOS, .apk on Android). Can be specified multiple times for
@@ -110,8 +111,9 @@ FLAGS
                                              <options: android|ios>
   -t, --run-target=<option>                  [default: device] The target to run the app on.
                                              <options: device|emulator>
-  --all-traffic                              By default, only the traffic of the specified app is recorded. Set this
-                                             flag to record all traffic.
+  --all-traffic                              By default, only the traffic of the specified app is recorded on Android.
+                                             Set this flag to record all traffic. On iOS, all system traffic is always
+                                             recorded.
   --[no-]bypass-certificate-pinning          Bypass certificate pinning on Android using objection. Enabled by default.
   --bypass-tracking-domain-resolution-check  By default, we assert that a few tracking domains can be resolved. This is
                                              useful to ensure that no DNS tracking blocker is interfering with the
@@ -129,21 +131,31 @@ EMULATOR FLAGS
   --emulator-no-audio               Whether to start the emulator with audio disabled.
   --emulator-snapshot-name=<value>  The name of a snapshot to reset the emulator to before starting.
 
+IOS FLAGS
+  --ios-ip=<value>        The IP address of the iOS device.
+  --ios-proxy-ip=<value>  The IP address of the host running the proxy to set up on the iOS device.
+  --ios-root-pw=<value>   [default: alpine] The password of the root user on the iOS device.
+
 DESCRIPTION
   Record the traffic of an Android or iOS app in HAR format.
 
   The app will be installed and started automatically on the device or emulator. Its traffic will be then recorded for
   the specified duration and saved as a HAR file at the end. You can either record the traffic of the entire system or
-  only the specified app (default).
+  only the specified app (default on Android, currently unsupported on iOS).
 
   The app can optionally be uninstalled automatically afterwards.
 
 EXAMPLES
-  Record the traffic of `app.apk` for 60 seconds.
+  Record the traffic of the Android app `app.apk` for 60 seconds on a physical device.
 
     $ tweasel record-traffic app.apk
 
-  Record the traffic of an consisting of multiple split APKs.
+  Record the traffic of the iOS app `app.ipa` for 60 seconds on the physical iPhone with the IP 10.0.0.2. The host
+  that runs the proxy has the IP 10.0.0.2.
+
+    $ tweasel record-traffic app.ipa --ios-ip 10.0.0.3 --ios-proxy-ip 10.0.0.2
+
+  Record the traffic of an Android app consisting of multiple split APKs.
 
     $ tweasel record-traffic app.apk config.en.app.apk config.xxhdpi.app.apk
 
