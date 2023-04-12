@@ -11,7 +11,7 @@ type ListrCtx = {
 
 export default class RecordTraffic extends Command {
     static override summary = 'Record the traffic of an Android or iOS app in HAR format.';
-    static override description = `The app will be installed and started automatically on the device or emulator. Its traffic will be then recorded for the specified duration and saved as a HAR file at the end. You can either record the traffic of the entire system or only the specified app (default).
+    static override description = `The app will be installed and started automatically on the device or emulator. Its traffic will be then recorded for the specified duration and saved as a HAR file at the end. You can either record the traffic of the entire system or only the specified app (default on Android, currently unsupported on iOS).
 
 The app can optionally be uninstalled automatically afterwards.`;
 
@@ -20,11 +20,16 @@ The app can optionally be uninstalled automatically afterwards.`;
 
     static override examples = [
         {
-            description: 'Record the traffic of `app.apk` for 60 seconds.',
+            description: 'Record the traffic of the Android app `app.apk` for 60 seconds on a physical device.',
             command: '<%= config.bin %> <%= command.id %> app.apk',
         },
         {
-            description: 'Record the traffic of an consisting of multiple split APKs.',
+            description:
+                'Record the traffic of the iOS app `app.ipa` for 60 seconds on the physical iPhone with the IP 10.0.0.2. The host that runs the proxy has the IP 10.0.0.2.',
+            command: '<%= config.bin %> <%= command.id %> app.ipa --ios-ip 10.0.0.3 --ios-proxy-ip 10.0.0.2',
+        },
+        {
+            description: 'Record the traffic of an Android app consisting of multiple split APKs.',
             command: '<%= config.bin %> <%= command.id %> app.apk config.en.app.apk config.xxhdpi.app.apk',
         },
         {
@@ -49,6 +54,16 @@ The app can optionally be uninstalled automatically afterwards.`;
             description: 'The platform to run the app on (will be inferred from the first app file if not specified).',
             required: false,
             options: ['android', 'ios'],
+
+            relationships: [
+                {
+                    type: 'all',
+                    flags: [
+                        { name: 'ios-ip', when: async (f) => f['platform'] === 'ios' },
+                        { name: 'ios-proxy-ip', when: async (f) => f['platform'] === 'ios' },
+                    ],
+                },
+            ],
         }),
 
         'run-target': Flags.string({
@@ -78,7 +93,7 @@ The app can optionally be uninstalled automatically afterwards.`;
 
         'all-traffic': Flags.boolean({
             description:
-                'By default, only the traffic of the specified app is recorded. Set this flag to record all traffic.',
+                'By default, only the traffic of the specified app is recorded on Android. Set this flag to record all traffic. On iOS, all system traffic is always recorded.',
             default: false,
         }),
 
@@ -97,6 +112,22 @@ The app can optionally be uninstalled automatically afterwards.`;
             description:
                 'By default, we assert that a few tracking domains can be resolved. This is useful to ensure that no DNS tracking blocker is interfering with the results. Set this flag to disable this behavior.',
             default: false,
+        }),
+
+        'ios-ip': Flags.string({
+            description: 'The IP address of the iOS device.',
+            helpGroup: 'iOS',
+        }),
+
+        'ios-proxy-ip': Flags.string({
+            description: 'The IP address of the host running the proxy to set up on the iOS device.',
+            helpGroup: 'iOS',
+        }),
+
+        'ios-root-pw': Flags.string({
+            description: 'The password of the root user on the iOS device.',
+            helpGroup: 'iOS',
+            default: 'alpine',
         }),
 
         'emulator-name': Flags.string({
@@ -144,6 +175,9 @@ The app can optionally be uninstalled automatically afterwards.`;
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const platform = (flags.platform as 'ios' | 'android') ?? (appFiles[0]!.endsWith('.ipa') ? 'ios' : 'android');
+        // If the platform is not specified explicitly, we unfortunately can't enforce this in the flags definition.
+        if (platform === 'ios' && (!flags['ios-ip'] || !flags['ios-proxy-ip']))
+            throw new Error('You need to specify the --ios-ip and --ios-proxy-ip flags for iOS.');
 
         await new listr<ListrCtx>([
             {
@@ -156,6 +190,7 @@ The app can optionally be uninstalled automatically afterwards.`;
                             ? ['certificate-pinning-bypass', 'frida']
                             : [],
                         targetOptions: {
+                            // Android
                             startEmulatorOptions: {
                                 emulatorName: flags['emulator-name'],
                                 headless: flags['emulator-headless'],
@@ -163,7 +198,13 @@ The app can optionally be uninstalled automatically afterwards.`;
                                 ephemeral: flags['emulator-ephemeral'],
                             },
                             snapshotName: flags['emulator-snapshot-name'],
-                        },
+
+                            // iOS
+                            rootPw: flags['ios-root-pw'],
+                            ip: flags['ios-ip'],
+                            proxyIp: flags['ios-proxy-ip'],
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        } as any,
                     });
 
                     if (!flags['bypass-tracking-domain-resolution-check'])
@@ -171,7 +212,10 @@ The app can optionally be uninstalled automatically afterwards.`;
                     await ctx.analysis.ensureDevice();
                     if (flags['emulator-snapshot-name']) await ctx.analysis.resetDevice();
 
-                    ctx.appAnalysis = await ctx.analysis.startAppAnalysis(appFiles);
+                    ctx.appAnalysis = await ctx.analysis.startAppAnalysis(
+                        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                        appFiles.length === 1 ? appFiles[0]! : appFiles
+                    );
                 },
             },
             {
