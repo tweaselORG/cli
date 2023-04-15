@@ -4105,9 +4105,9 @@ log-update@^4.0.0:
     wrap-ansi "^6.2.0"
 
 long@^5.0.0:
-  version "5.2.3"
-  resolved "https://registry.yarnpkg.com/long/-/long-5.2.3.tgz#a3ba97f3877cf1d778eccbcb048525ebb77499e1"
-  integrity sha512-lcHwpNoggQTObv5apGNCTdJrO69eHOZMi4BNC+rTLER8iHAqGrUVeLh/irVIM7zTw2bOXA8T6uNPeujwOLg/2Q==
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/long/-/long-5.2.1.tgz#e27595d0083d103d2fa2c20c7699f8e0c92b897f"
+  integrity sha512-GKSNGeNAtw8IryjjkhZxuKB3JzlcLTwjtiQCHKvqQet81I93kXslhDQruGI/QsddO83mcDToBVy7GqGS/zYf/A==
 
 lowercase-keys@^2.0.0:
   version "2.0.0"
@@ -6513,9 +6513,9 @@ tr46@~0.0.3:
   integrity sha1-gYT9NH2snNwYWZLzpmIuFLnZq2o=
 
 trackhar@^0.1.0:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/trackhar/-/trackhar-0.1.1.tgz#1397d3a97c7a7a5adcdc4b24438e21e98fcf6986"
-  integrity sha512-GEx9kAofrXQAGJqHGX28tB4COPtyz8jLD6Yo2cPUiHKdWJTAYddhauZ+1aZhk1d785V62UukEb5x3DjwkJenjw==
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/trackhar/-/trackhar-0.1.0.tgz#bd8c67ce098923bdae700754f52976601101286f"
+  integrity sha512-mpZqVnGkqNfVzBavRxXWzTILugeNOVBPIkBwQbY2xSwELmX8VcrfLylLAZiM1cFnjuacHsS2nnr1S55/xV9upw==
   dependencies:
     "@types/har-format" "^1.2.10"
     cross-dirname "^0.1.0"

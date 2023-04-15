@@ -2,7 +2,7 @@
 
 > Command-line tool for the libraries of the tweasel project.
 
-The tweasel project provides various JavaScript libraries for instrumenting and analyzing mobile apps and their traffic. `tweasel-cli` is a command-line tool that provides a convenient wrapper around these libraries for common use cases, so you don't have to write any code. Currently, support for [`cyanoacrylate`](https://github.com/tweaselORG/cyanoacrylate) is implemented.
+The tweasel project provides various JavaScript libraries for instrumenting and analyzing mobile apps and their traffic. `tweasel-cli` is a command-line tool that provides a convenient wrapper around these libraries for common use cases, so you don't have to write any code. Currently, support for [`cyanoacrylate`](https://github.com/tweaselORG/cyanoacrylate) and [`TrackHAR`](https://github.com/tweaselORG/TrackHAR) is implemented.
 
 The tweasel CLI provides the following commands:
 
@@ -11,6 +11,9 @@ The tweasel CLI provides the following commands:
   The app will be installed and started automatically on the device or emulator. Its traffic will be then recorded for the specified duration and saved as a HAR file at the end. You can either record the traffic of the entire system or only the specified app (default on Android, currently unsupported on iOS).
 
   The app can optionally be uninstalled automatically afterwards.
+* `detect-tracking`: Detect tracking data transmissions from traffic in HAR format.
+
+  The traffic in the specified HAR file will be analyzed using TrackHAR. The detected tracking data can be output as a human-readable table or as JSON.
 
 More commands and support for the other libraries will be added soon.
 
@@ -35,6 +38,7 @@ You can run the CLI using the `tweasel` command.
 
 <!-- commands -->
 * [`tweasel autocomplete [SHELL]`](#tweasel-autocomplete-shell)
+* [`tweasel detect-tracking <HAR FILE>`](#tweasel-detect-tracking-har-file)
 * [`tweasel help [COMMANDS]`](#tweasel-help-commands)
 * [`tweasel record-traffic <APP FILE(S)>`](#tweasel-record-traffic-app-files)
 
@@ -66,6 +70,64 @@ EXAMPLES
 ```
 
 _See code: [@oclif/plugin-autocomplete](https://github.com/oclif/plugin-autocomplete/blob/v2.1.8/src/commands/autocomplete/index.ts)_
+
+## `tweasel detect-tracking <HAR FILE>`
+
+Detect tracking data transmissions from traffic in HAR format.
+
+```
+USAGE
+  $ tweasel detect-tracking <HAR FILE> [--json] [--hide-unmatched] [--columns <value> | -x] [--sort <value>]
+    [--filter <value>] [--output csv|json|yaml |  | [--csv | --no-truncate]] [--no-header | ]
+
+ARGUMENTS
+  <HAR FILE>  The path to the HAR file to analyze.
+
+FLAGS
+  -x, --extended         show extra columns
+  --columns=<value>      only show provided columns (comma-separated)
+  --csv                  output is csv format [alias: --output=csv]
+  --filter=<value>       filter property by partial string matching, ex: name=foo
+  --[no-]hide-unmatched  Hide requests that were not matched by any adapter.
+  --no-header            hide table header from output
+  --no-truncate          do not truncate output to fit screen
+  --output=<option>      output in a more machine friendly format
+                         <options: csv|json|yaml>
+  --sort=<value>         property to sort by (prepend '-' for descending)
+
+GLOBAL FLAGS
+  --json  Format output as json.
+
+DESCRIPTION
+  Detect tracking data transmissions from traffic in HAR format.
+
+  By default, this will output a human-readable table of the detected tracking data for each requests. You can use
+  various flags to adjust the way the tables are displayed. If you instead want a machine-readable output, use the
+  --json flag.
+
+  To show requests not matched by any adapter, use the --no-hide-unmatched flag.
+
+EXAMPLES
+  Detect tracking data transmissions in `app.har` and display them in table form, hiding requests to unsupported
+  endpoints.
+
+    $ tweasel detect-tracking app.har
+
+  Detect tracking data transmissions in `app.har` and display them in table form, but show requests to unsupported
+  endpoints.
+
+    $ tweasel detect-tracking app.har --no-hide-unmatched
+
+  Detect tracking data transmissions in `app.har` and display them in table form with additional details.
+
+    $ tweasel detect-tracking app.har --extended
+
+  Detect tracking data transmissions in `app.har` and output them as JSON.
+
+    $ tweasel detect-tracking app.har --json
+```
+
+_See code: [dist/commands/detect-tracking.ts](https://github.com/tweaselORG/cli/blob/v0.0.0/dist/commands/detect-tracking.ts)_
 
 ## `tweasel help [COMMANDS]`
 

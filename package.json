@@ -62,6 +62,7 @@
         "@baltpeter/eslint-config": "^2.1.2",
         "@baltpeter/prettier-config": "^2.0.0",
         "@baltpeter/tsconfig": "^3.0.0",
+        "@types/har-format": "^1.2.10",
         "@types/listr": "^0.14.4",
         "@types/node": "^18.15.11",
         "@typescript-eslint/eslint-plugin": "^5.57.1",
