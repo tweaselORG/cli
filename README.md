@@ -127,7 +127,7 @@ EXAMPLES
     $ tweasel detect-tracking app.har --json
 ```
 
-_See code: [dist/commands/detect-tracking.ts](https://github.com/tweaselORG/cli/blob/v0.0.0/dist/commands/detect-tracking.ts)_
+_See code: [dist/commands/detect-tracking.ts](https://github.com/tweaselORG/cli/blob/v0.1.0/dist/commands/detect-tracking.ts)_
 
 ## `tweasel help [COMMANDS]`
 
@@ -235,7 +235,7 @@ EXAMPLES
     $ tweasel record-traffic app.apk --all-traffic
 ```
 
-_See code: [dist/commands/record-traffic.ts](https://github.com/tweaselORG/cli/blob/v0.0.0/dist/commands/record-traffic.ts)_
+_See code: [dist/commands/record-traffic.ts](https://github.com/tweaselORG/cli/blob/v0.1.0/dist/commands/record-traffic.ts)_
 <!-- commandsstop -->
 
 ## License
