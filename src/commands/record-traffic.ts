@@ -195,7 +195,7 @@ The app can optionally be uninstalled automatically afterwards.`;
 
     async run() {
         const { argv, flags } = await this.parse(RecordTraffic);
-        const appFiles = argv as string[];
+        const appFiles = argv as `${string}.apk`[];
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const platform = (flags.platform as 'ios' | 'android') ?? (appFiles[0]!.endsWith('.ipa') ? 'ios' : 'android');
@@ -251,13 +251,7 @@ The app can optionally be uninstalled automatically afterwards.`;
                         },
                         {
                             title: 'Waiting for device…',
-                            // On Android, we are waiting a while for the device to become available. That is quite
-                            // frustrating if the user forgot to connect the device and doesn't realize what's going on.
-                            // Thus, we prepend this step to make it explicit.
-                            enabled: () => platform === 'android',
-                            task: async () =>
-                                'awaitAdb' in ctx.analysis.platform._internal &&
-                                ctx.analysis.platform._internal.awaitAdb(),
+                            task: async () => ctx.analysis.platform.waitForDevice(),
                         },
                         {
                             title: 'Checking device connection and setting up…',

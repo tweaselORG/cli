@@ -53,8 +53,9 @@
         "@oclif/plugin-autocomplete": "^2.1.8",
         "@oclif/plugin-help": "^5",
         "chalk": "^5.2.0",
-        "cyanoacrylate": "^0.4.1",
+        "cyanoacrylate": "^0.6.0",
         "enquirer": "^2.3.6",
+        "listr": "^0.14.3",
         "listr2": "^6.4.2",
         "terminal-link": "^3.0.0",
         "trackhar": "^0.1.0"
