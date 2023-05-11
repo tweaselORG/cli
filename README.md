@@ -156,10 +156,10 @@ Record the traffic of an Android or iOS app in HAR format.
 ```
 USAGE
   $ tweasel record-traffic <APP FILE(S)> [-p android|ios] [-t device|emulator] [--multiple-collections | --timeout
-    <value>] [-o <value>] [--bypass-certificate-pinning] [--all-traffic] [--uninstall-app] [--grant-permissions]
-    [--bypass-tracking-domain-resolution-check] [--ios-ip <value>] [--ios-proxy-ip <value>] [--ios-root-pw <value>]
-    [--emulator-name <value>] [--emulator-snapshot-name <value>] [--emulator-headless] [--emulator-no-audio]
-    [--emulator-ephemeral]
+    <value>] [-o <value>] [--bypass-certificate-pinning] [--all-traffic] [--uninstall-app] [--stop-app]
+    [--grant-permissions] [--bypass-tracking-domain-resolution-check] [--ios-ip <value>] [--ios-proxy-ip <value>]
+    [--ios-root-pw <value>] [--emulator-name <value>] [--emulator-snapshot-name <value>] [--emulator-headless]
+    [--emulator-no-audio] [--emulator-ephemeral]
 
 ARGUMENTS
   <APP FILE(S)>  The path to the app to analyze (.ipa on iOS, .apk on Android). Can be specified multiple times for
@@ -182,9 +182,11 @@ FLAGS
                                              results. Set this flag to disable this behavior.
   --[no-]grant-permissions                   Automatically grant all permissions to the app. Enabled by default.
   --multiple-collections                     By providing this flag, you can separate the recorded traffic into multiple
-                                             named chunks. This can for example be useful if you want to clearly
-                                             differentiate between traffic from before interacting with a consent dialog
-                                             and after.
+                                             named chunks. Each chunk is saved in a separate HAR file and you are
+                                             interactively prompted to start, stop and name the chunks. This can for
+                                             example be useful if you want to clearly differentiate between traffic from
+                                             before interacting with a consent dialog and after.
+  --[no-]stop-app                            Whether to stop the app after the analysis.
   --timeout=<value>                          By default, traffic is recorded until you manually end the collection. By
                                              providing this flag, you can set an explicit timeout (in seconds) after
                                              which the recording is stopped automatically. This is especially useful for
@@ -207,21 +209,26 @@ IOS FLAGS
 DESCRIPTION
   Record the traffic of an Android or iOS app in HAR format.
 
-  The app will be installed and started automatically on the device or emulator. Its traffic will be then recorded for
-  the specified duration and saved as a HAR file at the end. You can either record the traffic of the entire system or
-  only the specified app (default on Android, currently unsupported on iOS).
+  The app will be installed and started automatically on the device or emulator. Its traffic will be then recorded until
+  the user stops the collection or for the specified duration and saved as a HAR file at the end. You can either record
+  the traffic of the entire system or only the specified app (default on Android, currently unsupported on iOS).
 
   The app can optionally be uninstalled automatically afterwards.
 
 EXAMPLES
-  Record the traffic of the Android app `app.apk` for 60 seconds on a physical device.
+  Record the traffic of the Android app `app.apk` on a physical device. Wait for the user to stop the collection.
 
     $ tweasel record-traffic app.apk
 
   Record the traffic of the iOS app `app.ipa` for 60 seconds on the physical iPhone with the IP 10.0.0.2. The host
   that runs the proxy has the IP 10.0.0.2.
 
-    $ tweasel record-traffic app.ipa --ios-ip 10.0.0.3 --ios-proxy-ip 10.0.0.2
+    $ tweasel record-traffic app.ipa --timeout 60 --ios-ip 10.0.0.3 --ios-proxy-ip 10.0.0.2
+
+  Record the traffic of `app.apk` in multiple chunks. Wait for the user to start and stop each chunk. Each chunk is
+  saved as a separate HAR file, with the chunk name appended to filename.
+
+    $ tweasel record-traffic app.apk --multiple-collections
 
   Record the traffic of an Android app consisting of multiple split APKs.
 

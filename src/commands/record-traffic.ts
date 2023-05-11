@@ -120,6 +120,12 @@ The app can optionally be uninstalled automatically afterwards.`;
             default: false,
         }),
 
+        'stop-app': Flags.boolean({
+            description: 'Whether to stop the app after the analysis. Enabled by default.',
+            default: true,
+            allowNo: true,
+        }),
+
         'grant-permissions': Flags.boolean({
             description: 'Automatically grant all permissions to the app. Enabled by default.',
             allowNo: true,
@@ -312,6 +318,7 @@ The app can optionally be uninstalled automatically afterwards.`;
             },
             {
                 title: 'Stopping app…',
+                enabled: () => flags['stop-app'],
                 task: async (ctx) => ctx.appAnalysis.stopApp(),
             },
             {
