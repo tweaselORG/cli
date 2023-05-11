@@ -8,7 +8,7 @@ The tweasel CLI provides the following commands:
 
 * `record-traffic`: Record the traffic of an Android or iOS app in HAR format.
 
-  The app will be installed and started automatically on the device or emulator. Its traffic will be then recorded for the specified duration and saved as a HAR file at the end. You can either record the traffic of the entire system or only the specified app (default on Android, currently unsupported on iOS).
+  The app will be installed and started automatically on the device or emulator. Its traffic will be then recorded until the user stops the collection or for the specified duration and saved as a HAR file at the end. You can either record the traffic of the entire system or only the specified app (default on Android, currently unsupported on iOS).
 
   The app can optionally be uninstalled automatically afterwards.
 * `detect-tracking`: Detect tracking data transmissions from traffic in HAR format.
@@ -155,8 +155,8 @@ Record the traffic of an Android or iOS app in HAR format.
 
 ```
 USAGE
-  $ tweasel record-traffic <APP FILE(S)> [-p android|ios] [-t device|emulator] [--timeout <value>] [-o <value>]
-    [--bypass-certificate-pinning] [--all-traffic] [--uninstall-app] [--grant-permissions]
+  $ tweasel record-traffic <APP FILE(S)> [-p android|ios] [-t device|emulator] [--multiple-collections | --timeout
+    <value>] [-o <value>] [--bypass-certificate-pinning] [--all-traffic] [--uninstall-app] [--grant-permissions]
     [--bypass-tracking-domain-resolution-check] [--ios-ip <value>] [--ios-proxy-ip <value>] [--ios-root-pw <value>]
     [--emulator-name <value>] [--emulator-snapshot-name <value>] [--emulator-headless] [--emulator-no-audio]
     [--emulator-ephemeral]
@@ -181,8 +181,14 @@ FLAGS
                                              useful to ensure that no DNS tracking blocker is interfering with the
                                              results. Set this flag to disable this behavior.
   --[no-]grant-permissions                   Automatically grant all permissions to the app. Enabled by default.
-  --timeout=<value>                          [default: 60] How long to run the app and record its traffic for (in
-                                             seconds).
+  --multiple-collections                     By providing this flag, you can separate the recorded traffic into multiple
+                                             named chunks. This can for example be useful if you want to clearly
+                                             differentiate between traffic from before interacting with a consent dialog
+                                             and after.
+  --timeout=<value>                          By default, traffic is recorded until you manually end the collection. By
+                                             providing this flag, you can set an explicit timeout (in seconds) after
+                                             which the recording is stopped automatically. This is especially useful for
+                                             automated analyses.
   --uninstall-app                            Whether to uninstall the app after the analysis.
 
 EMULATOR FLAGS

@@ -2,16 +2,19 @@ import { Args, Command, Flags } from '@oclif/core';
 import type { Analysis, AppAnalysis, SupportedCapability } from 'cyanoacrylate';
 import { pause, startAnalysis } from 'cyanoacrylate';
 import { writeFile } from 'fs/promises';
-import listr from 'listr';
+import { Listr } from 'listr2';
+import { basename, dirname, extname, join } from 'path';
 
 type ListrCtx = {
     analysis: Analysis<'android' | 'ios', 'emulator', SupportedCapability<'android'>[]>;
     appAnalysis: AppAnalysis<'android' | 'ios', 'emulator', SupportedCapability<'android'>[]>;
+    trafficCollectionOptions: Parameters<ListrCtx['analysis']['startTrafficCollection']>[0];
+    currentTrafficCollectionName?: string;
 };
 
 export default class RecordTraffic extends Command {
     static override summary = 'Record the traffic of an Android or iOS app in HAR format.';
-    static override description = `The app will be installed and started automatically on the device or emulator. Its traffic will be then recorded for the specified duration and saved as a HAR file at the end. You can either record the traffic of the entire system or only the specified app (default on Android, currently unsupported on iOS).
+    static override description = `The app will be installed and started automatically on the device or emulator. Its traffic will be then recorded until the user stops the collection or for the specified duration and saved as a HAR file at the end. You can either record the traffic of the entire system or only the specified app (default on Android, currently unsupported on iOS).
 
 The app can optionally be uninstalled automatically afterwards.`;
 
@@ -20,13 +23,20 @@ The app can optionally be uninstalled automatically afterwards.`;
 
     static override examples = [
         {
-            description: 'Record the traffic of the Android app `app.apk` for 60 seconds on a physical device.',
+            description:
+                'Record the traffic of the Android app `app.apk` on a physical device. Wait for the user to stop the collection.',
             command: '<%= config.bin %> <%= command.id %> app.apk',
         },
         {
             description:
                 'Record the traffic of the iOS app `app.ipa` for 60 seconds on the physical iPhone with the IP 10.0.0.2. The host that runs the proxy has the IP 10.0.0.2.',
-            command: '<%= config.bin %> <%= command.id %> app.ipa --ios-ip 10.0.0.3 --ios-proxy-ip 10.0.0.2',
+            command:
+                '<%= config.bin %> <%= command.id %> app.ipa --timeout 60 --ios-ip 10.0.0.3 --ios-proxy-ip 10.0.0.2',
+        },
+        {
+            description:
+                'Record the traffic of `app.apk` in multiple chunks. Wait for the user to start and stop each chunk. Each chunk is saved as a separate HAR file, with the chunk name appended to filename.',
+            command: '<%= config.bin %> <%= command.id %> app.apk --multiple-collections',
         },
         {
             description: 'Record the traffic of an Android app consisting of multiple split APKs.',
@@ -74,8 +84,16 @@ The app can optionally be uninstalled automatically afterwards.`;
         }),
 
         timeout: Flags.integer({
-            description: 'How long to run the app and record its traffic for (in seconds).',
-            default: 60,
+            description:
+                'By default, traffic is recorded until you manually end the collection. By providing this flag, you can set an explicit timeout (in seconds) after which the recording is stopped automatically. This is especially useful for automated analyses.',
+            required: false,
+        }),
+
+        'multiple-collections': Flags.boolean({
+            description:
+                'By providing this flag, you can separate the recorded traffic into multiple named chunks. Each chunk is saved in a separate HAR file and you are interactively prompted to start, stop and name the chunks. This can for example be useful if you want to clearly differentiate between traffic from before interacting with a consent dialog and after.',
+            required: false,
+            exclusive: ['timeout'],
         }),
 
         output: Flags.string({
@@ -179,10 +197,18 @@ The app can optionally be uninstalled automatically afterwards.`;
         if (platform === 'ios' && (!flags['ios-ip'] || !flags['ios-proxy-ip']))
             throw new Error('You need to specify the --ios-ip and --ios-proxy-ip flags for iOS.');
 
-        await new listr<ListrCtx>([
+        await new Listr<ListrCtx>([
             {
                 title: 'Setting up…',
-                task: async (ctx) => {
+                task: async (ctx, task) => {
+                    if (flags['multiple-collections'])
+                        ctx.currentTrafficCollectionName = await task.prompt({
+                            type: 'input',
+                            message: 'Enter a name for the first traffic collection:',
+                            required: true,
+                            initial: 'initial',
+                        });
+
                     ctx.analysis = await startAnalysis({
                         platform,
                         runTarget: flags['run-target'] as 'emulator',
@@ -228,24 +254,65 @@ The app can optionally be uninstalled automatically afterwards.`;
             {
                 title: 'Starting app…',
                 task: async (ctx) => {
-                    await ctx.analysis.startTrafficCollection(
-                        flags['all-traffic'] ? undefined : { mode: 'allowlist', apps: [ctx.appAnalysis.app.id] }
-                    );
+                    ctx.trafficCollectionOptions = flags['all-traffic']
+                        ? undefined
+                        : { mode: 'allowlist', apps: [ctx.appAnalysis.app.id] };
+
+                    await ctx.analysis.startTrafficCollection(ctx.trafficCollectionOptions);
                     await ctx.appAnalysis.startApp();
                 },
             },
             {
-                title: `Waiting ${flags['timeout']} seconds…`,
-                task: () => pause(flags['timeout'] * 1000),
-            },
-            {
-                title: 'Saving traffic and stopping app…',
+                title: `Collecting traffic for ${flags['timeout']} seconds…`,
+                enabled: () => flags['timeout'] !== undefined,
                 task: async (ctx) => {
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    await pause(flags['timeout']! * 1000);
+
                     const traffic = await ctx.analysis.stopTrafficCollection();
                     await writeFile(flags.output || `${ctx.appAnalysis.app.id}.har`, JSON.stringify(traffic, null, 4));
-
-                    await ctx.appAnalysis.stopApp();
                 },
+            },
+            {
+                title: 'Collecting traffic…',
+                enabled: () => flags['timeout'] === undefined,
+                task: async (ctx, task) => {
+                    do {
+                        await task.prompt({
+                            message: 'Press enter to stop the traffic collection.',
+                            required: false,
+                            type: 'invisible',
+                        });
+
+                        const traffic = await ctx.analysis.stopTrafficCollection();
+                        const outputSuffix = flags['multiple-collections']
+                            ? `-${ctx.currentTrafficCollectionName}`
+                            : '';
+                        const output = flags.output
+                            ? join(
+                                  dirname(flags.output),
+                                  `${basename(flags.output, extname(flags.output))}${outputSuffix}${extname(
+                                      flags.output
+                                  )}`
+                              )
+                            : `${ctx.appAnalysis.app.id}${outputSuffix}.har`;
+                        await writeFile(output, JSON.stringify(traffic, null, 4));
+
+                        if (!flags['multiple-collections']) break;
+                        ctx.currentTrafficCollectionName = await task.prompt({
+                            type: 'input',
+                            message: 'Enter a name for the next traffic collection (leave empty to stop):',
+                            required: false,
+                        });
+                        if (!ctx.currentTrafficCollectionName?.trim()) break;
+
+                        await ctx.analysis.startTrafficCollection(ctx.trafficCollectionOptions);
+                    } while (flags['multiple-collections']);
+                },
+            },
+            {
+                title: 'Stopping app…',
+                task: async (ctx) => ctx.appAnalysis.stopApp(),
             },
             {
                 title: 'Uninstalling app…',
