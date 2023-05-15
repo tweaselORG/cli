@@ -215,39 +215,69 @@ The app can optionally be uninstalled automatically afterwards.`;
                             initial: 'initial',
                         });
 
-                    ctx.analysis = await startAnalysis({
-                        platform,
-                        runTarget: flags['run-target'] as 'emulator',
-                        capabilities: flags['bypass-certificate-pinning']
-                            ? ['certificate-pinning-bypass', 'frida']
-                            : [],
-                        targetOptions: {
-                            // Android
-                            startEmulatorOptions: {
-                                emulatorName: flags['emulator-name'],
-                                headless: flags['emulator-headless'],
-                                audio: !flags['emulator-no-audio'],
-                                ephemeral: flags['emulator-ephemeral'],
+                    return task.newListr([
+                        {
+                            title: 'Starting analysis…',
+                            task: async () => {
+                                ctx.analysis = await startAnalysis({
+                                    platform,
+                                    runTarget: flags['run-target'] as 'emulator',
+                                    capabilities: flags['bypass-certificate-pinning']
+                                        ? ['certificate-pinning-bypass', 'frida']
+                                        : [],
+                                    targetOptions: {
+                                        // Android
+                                        startEmulatorOptions: {
+                                            emulatorName: flags['emulator-name'],
+                                            headless: flags['emulator-headless'],
+                                            audio: !flags['emulator-no-audio'],
+                                            ephemeral: flags['emulator-ephemeral'],
+                                        },
+                                        snapshotName: flags['emulator-snapshot-name'],
+
+                                        // iOS
+                                        rootPw: flags['ios-root-pw'],
+                                        ip: flags['ios-ip'],
+                                        proxyIp: flags['ios-proxy-ip'],
+                                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                    } as any,
+                                });
                             },
-                            snapshotName: flags['emulator-snapshot-name'],
-
-                            // iOS
-                            rootPw: flags['ios-root-pw'],
-                            ip: flags['ios-ip'],
-                            proxyIp: flags['ios-proxy-ip'],
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        } as any,
-                    });
-
-                    if (!flags['bypass-tracking-domain-resolution-check'])
-                        await ctx.analysis.ensureTrackingDomainResolution();
-                    await ctx.analysis.ensureDevice();
-                    if (flags['emulator-snapshot-name']) await ctx.analysis.resetDevice();
-
-                    ctx.appAnalysis = await ctx.analysis.startAppAnalysis(
-                        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                        appFiles.length === 1 ? appFiles[0]! : appFiles
-                    );
+                        },
+                        {
+                            title: 'Checking tracking domain resolution…',
+                            skip: () => flags['bypass-tracking-domain-resolution-check'],
+                            task: () => ctx.analysis.ensureTrackingDomainResolution(),
+                        },
+                        {
+                            title: 'Waiting for device…',
+                            // On Android, we are waiting a while for the device to become available. That is quite
+                            // frustrating if the user forgot to connect the device and doesn't realize what's going on.
+                            // Thus, we prepend this step to make it explicit.
+                            enabled: () => platform === 'android',
+                            task: async () =>
+                                'awaitAdb' in ctx.analysis.platform._internal &&
+                                ctx.analysis.platform._internal.awaitAdb(),
+                        },
+                        {
+                            title: 'Checking device connecting and setting up…',
+                            task: () => ctx.analysis.ensureDevice(),
+                        },
+                        {
+                            title: 'Resetting device…',
+                            enabled: () => !!flags['emulator-snapshot-name'],
+                            task: () => ctx.analysis.resetDevice(),
+                        },
+                        {
+                            title: 'Starting app analysis…',
+                            task: async () => {
+                                ctx.appAnalysis = await ctx.analysis.startAppAnalysis(
+                                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                                    appFiles.length === 1 ? appFiles[0]! : appFiles
+                                );
+                            },
+                        },
+                    ]);
                 },
             },
             {
@@ -258,7 +288,7 @@ The app can optionally be uninstalled automatically afterwards.`;
                 },
             },
             {
-                title: 'Starting app…',
+                title: 'Starting app and traffic collection…',
                 task: async (ctx) => {
                     ctx.trafficCollectionOptions = flags['all-traffic']
                         ? undefined
