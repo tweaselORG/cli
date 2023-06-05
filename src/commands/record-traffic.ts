@@ -260,7 +260,7 @@ The app can optionally be uninstalled automatically afterwards.`;
                                 ctx.analysis.platform._internal.awaitAdb(),
                         },
                         {
-                            title: 'Checking device connecting and setting up…',
+                            title: 'Checking device connection and setting up…',
                             task: () => ctx.analysis.ensureDevice(),
                         },
                         {
