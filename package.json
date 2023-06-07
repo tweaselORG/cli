@@ -52,6 +52,7 @@
         "@oclif/core": "^2",
         "@oclif/plugin-autocomplete": "^2.1.8",
         "@oclif/plugin-help": "^5",
+        "andromatic": "1.1.0",
         "chalk": "^5.2.0",
         "cyanoacrylate": "^0.6.0",
         "enquirer": "^2.3.6",
@@ -87,6 +88,14 @@
         "plugins": [
             "@oclif/plugin-help",
             "@oclif/plugin-autocomplete"
-        ]
+        ],
+        "topics": {
+            "android-emulator": {
+                "description": "Create, start, and delete Android emulators."
+            },
+            "android-emulator:snapshot": {
+                "description": "Create and delete snapshots of Android emulators."
+            }
+        }
     }
 }
