@@ -1427,7 +1427,7 @@ amdefine@>=0.0.4:
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
   integrity sha512-S2Hw0TtNkMJhIabBwIojKL9YHO5T0n5eNqWJ7Lrlel/zDbftQpxpapi8tZs3X1HWa+u+QeydGmzzNU0m09+Rcg==
 
-andromatic@1.1.0, andromatic@^1.0.0, andromatic@^1.1.0:
+andromatic@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/andromatic/-/andromatic-1.1.0.tgz#55d8feb895f806553796aff261adb28f973b1fef"
   integrity sha512-hy0cZ/Yc/IFOcR6OFcvYcCKVUTMh3Dr7FLear/LQFEhkA7OZhprxmwikRtkzpAZF+aGfdTkB++VmTV9k2om5AQ==
