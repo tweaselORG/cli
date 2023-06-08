@@ -107,7 +107,7 @@ EXAMPLES
     $ tweasel android-emulator:create test --force
 ```
 
-_See code: [dist/commands/android-emulator/create.ts](https://github.com/tweaselORG/cli/blob/v0.1.0/dist/commands/android-emulator/create.ts)_
+_See code: [dist/commands/android-emulator/create.ts](https://github.com/tweaselORG/cli/blob/v0.2.0/dist/commands/android-emulator/create.ts)_
 
 ## `tweasel android-emulator:delete <NAME>`
 
@@ -126,7 +126,7 @@ EXAMPLES
     $ tweasel android-emulator:delete my-emulator
 ```
 
-_See code: [dist/commands/android-emulator/delete.ts](https://github.com/tweaselORG/cli/blob/v0.1.0/dist/commands/android-emulator/delete.ts)_
+_See code: [dist/commands/android-emulator/delete.ts](https://github.com/tweaselORG/cli/blob/v0.2.0/dist/commands/android-emulator/delete.ts)_
 
 ## `tweasel android-emulator:snapshot:create <NAME>`
 
@@ -145,7 +145,7 @@ EXAMPLES
     $ tweasel android-emulator:snapshot:create clean
 ```
 
-_See code: [dist/commands/android-emulator/snapshot/create.ts](https://github.com/tweaselORG/cli/blob/v0.1.0/dist/commands/android-emulator/snapshot/create.ts)_
+_See code: [dist/commands/android-emulator/snapshot/create.ts](https://github.com/tweaselORG/cli/blob/v0.2.0/dist/commands/android-emulator/snapshot/create.ts)_
 
 ## `tweasel android-emulator:snapshot:delete <NAME>`
 
@@ -164,7 +164,7 @@ EXAMPLES
     $ tweasel android-emulator:snapshot:delete clean
 ```
 
-_See code: [dist/commands/android-emulator/snapshot/delete.ts](https://github.com/tweaselORG/cli/blob/v0.1.0/dist/commands/android-emulator/snapshot/delete.ts)_
+_See code: [dist/commands/android-emulator/snapshot/delete.ts](https://github.com/tweaselORG/cli/blob/v0.2.0/dist/commands/android-emulator/snapshot/delete.ts)_
 
 ## `tweasel android-emulator:start <NAME>`
 
@@ -183,142 +183,7 @@ EXAMPLES
     $ tweasel android-emulator:start my-emulator
 ```
 
-_See code: [dist/commands/android-emulator/start.ts](https://github.com/tweaselORG/cli/blob/v0.1.0/dist/commands/android-emulator/start.ts)_
-
-## `tweasel android-emulator:create <NAME>`
-
-Create Android emulators.
-
-```
-USAGE
-  $ tweasel android-emulator:create <NAME> [--package <value> | --api-level <value> | --variant
-    default|google_apis|google_apis_playstore|aosp_atd|google_atd|android-tv|google-tv|android-wear|android-wear-cn |
-    --architecture x86|x86_64|arm64-v8a|armeabi-v7a] [--device <value>] [--partition-size <value>] [--force]
-
-ARGUMENTS
-  <NAME>  The name of the emulator to create.
-
-FLAGS
-  --api-level=<value>       The API level of the system image to use for the emulator, such as 30 for Android 11.
-  --architecture=<option>   The architecture of the system image to use for the emulator.
-                            <options: x86|x86_64|arm64-v8a|armeabi-v7a>
-  --device=<value>          The name of the device to use for the emulator, which determines the screen size,
-                            resolution, density and hardware features. Defaults to `pixel_4`.
-  --[no-]force              Whether to overwrite an existing emulator with the same name or not.
-  --package=<value>         The package path of the system image to use as understood by `sdkmanager` (e.g.
-                            `system-images;android-30;google_apis;x86_64`).
-  --partition-size=<value>  The partition size of the emulator in MB. Note that sometimes the partition size is not
-                            respected exactly, but the partition will always have at least the specified size.
-  --variant=<option>        The variant of the system image to use for the emulator.
-                            <options: default|google_apis|google_apis_playstore|aosp_atd|google_atd|android-tv|google-tv
-                            |android-wear|android-wear-cn>
-
-DESCRIPTION
-  Create Android emulators.
-
-  You can either use the --package flag to manually specify a system image to use, or use the --api-level, --variant,
-  and --architecture flags to specify the system image to use. Alternatively, they will be prompted for interactively if
-  not specified.
-
-EXAMPLES
-  Create an Android emulator called `my-emulator`. You will be interactively prompted for the system image to use.
-
-    $ tweasel android-emulator:create my-emulator
-
-  Create an x86_64 Android 13 emulator called `android13`.
-
-    $ tweasel android-emulator:create android13 --api-level 33 --variant google_apis --architecture x86_64
-
-  Create the same emulator as in the last example but specified by package path.
-
-    $ tweasel android-emulator:create android13 "system-images;android-33;google_apis;x86_64"
-
-  Create an emulator called `pixel2` with a Pixel 2 device and a 16 GB partition size.
-
-    $ tweasel android-emulator:create pixel2 --device pixel_2 --partition-size 16384
-
-  Create an emulator called `test`, overridign any potential existing emulator with the same name.
-
-    $ tweasel android-emulator:create test --force
-```
-
-_See code: [dist/commands/android-emulator/create.ts](https://github.com/tweaselORG/cli/blob/v0.1.0/dist/commands/android-emulator/create.ts)_
-
-## `tweasel android-emulator:delete <NAME>`
-
-Delete the specified emulator.
-
-```
-USAGE
-  $ tweasel android-emulator:delete <NAME>
-
-ARGUMENTS
-  <NAME>  The name of the emulator to delete.
-
-EXAMPLES
-  Delete the emulator called `my-emulator`.
-
-    $ tweasel android-emulator:delete my-emulator
-```
-
-_See code: [dist/commands/android-emulator/delete.ts](https://github.com/tweaselORG/cli/blob/v0.1.0/dist/commands/android-emulator/delete.ts)_
-
-## `tweasel android-emulator:snapshot:create <NAME>`
-
-Create a snapshot for the currently running emulator.
-
-```
-USAGE
-  $ tweasel android-emulator:snapshot:create <NAME>
-
-ARGUMENTS
-  <NAME>  The name of the snapshot to create.
-
-EXAMPLES
-  Create a snapshot called `clean`.
-
-    $ tweasel android-emulator:snapshot:create clean
-```
-
-_See code: [dist/commands/android-emulator/snapshot/create.ts](https://github.com/tweaselORG/cli/blob/v0.1.0/dist/commands/android-emulator/snapshot/create.ts)_
-
-## `tweasel android-emulator:snapshot:delete <NAME>`
-
-Delete the snapshot with the specified name for the currently running emulator.
-
-```
-USAGE
-  $ tweasel android-emulator:snapshot:delete <NAME>
-
-ARGUMENTS
-  <NAME>  The name of the snapshot to delete.
-
-EXAMPLES
-  Delete the snapshot called `clean`.
-
-    $ tweasel android-emulator:snapshot:delete clean
-```
-
-_See code: [dist/commands/android-emulator/snapshot/delete.ts](https://github.com/tweaselORG/cli/blob/v0.1.0/dist/commands/android-emulator/snapshot/delete.ts)_
-
-## `tweasel android-emulator:start <NAME>`
-
-Start the specified emulator.
-
-```
-USAGE
-  $ tweasel android-emulator:start <NAME>
-
-ARGUMENTS
-  <NAME>  The name of the emulator to start.
-
-EXAMPLES
-  Start the emulator called `my-emulator`.
-
-    $ tweasel android-emulator:start my-emulator
-```
-
-_See code: [dist/commands/android-emulator/start.ts](https://github.com/tweaselORG/cli/blob/v0.1.0/dist/commands/android-emulator/start.ts)_
+_See code: [dist/commands/android-emulator/start.ts](https://github.com/tweaselORG/cli/blob/v0.2.0/dist/commands/android-emulator/start.ts)_
 
 ## `tweasel autocomplete [SHELL]`
 
@@ -357,8 +222,8 @@ Detect tracking data transmissions from traffic in HAR format.
 
 ```
 USAGE
-  $ tweasel detect-tracking <HAR FILE> [--json] [--hide-unmatched] [--columns <value> | -x] [--sort <value>]
-    [--filter <value>] [--output csv|json|yaml |  | [--csv | --no-truncate]] [--no-header | ]
+  $ tweasel detect-tracking <HAR FILE> [--json] [--hide-unmatched] [--indicators <value>] [--columns <value> | -x]
+    [--sort <value>] [--filter <value>] [--output csv|json|yaml |  | [--csv | --no-truncate]] [--no-header | ]
 
 ARGUMENTS
   <HAR FILE>  The path to the HAR file to analyze.
@@ -369,6 +234,10 @@ FLAGS
   --csv                  output is csv format [alias: --output=csv]
   --filter=<value>       filter property by partial string matching, ex: name=foo
   --[no-]hide-unmatched  Hide requests that were not matched by any adapter.
+  --indicators=<value>   To also detect tracking data transmissions in requests not matched by an adapter, you can
+                         provide known honey data values as a JSON object mapping from properties to values (either
+                         inline or as a path to a JSON file). These values will then be searched for in the request
+                         headers, path and body of requests without an adapter, including in encoded values.
   --no-header            hide table header from output
   --no-truncate          do not truncate output to fit screen
   --output=<option>      output in a more machine friendly format
@@ -381,11 +250,13 @@ GLOBAL FLAGS
 DESCRIPTION
   Detect tracking data transmissions from traffic in HAR format.
 
-  By default, this will output a human-readable table of the detected tracking data for each requests. You can use
-  various flags to adjust the way the tables are displayed. If you instead want a machine-readable output, use the
-  --json flag.
+  This uses adapter-based parsing to handle requests from known tracking endpoints. You can also enable indicator
+  matching with the --indicators flag to search for known honey data values in requests not covered by any adapter.
 
-  To show requests not matched by any adapter, use the --no-hide-unmatched flag.
+  By default, it will output a human-readable table of the detected tracking data for each requests. You can use various
+  flags to adjust the way the tables are displayed. If you instead want a machine-readable output, use the --json flag.
+
+  To show requests not matched by any adapter (or indicator matching, if enabled), use the --no-hide-unmatched flag.
 
 EXAMPLES
   Detect tracking data transmissions in `app.har` and display them in table form, hiding requests to unsupported
@@ -398,6 +269,18 @@ EXAMPLES
 
     $ tweasel detect-tracking app.har --no-hide-unmatched
 
+  Detect tracking data transmissions in `app.har` and display them in table form. Also, try to detect tracking data
+  transmissions in requests not matched by an adapter by searching for known honey data values.
+
+    $ tweasel detect-tracking app.har --indicators '{ "localIp": ["10.0.0.2", "fd31:4159::a2a1"], "idfa": \
+      "6a1c1487-a0af-4223-b142-a0f4621d0311" }'
+
+  Detect tracking data transmissions in `app.har` and display them in table form. Also, try to detect tracking data
+  transmissions in requests not matched by an adapter by searching for known honey data values read from
+  `indicators.json`.
+
+    $ tweasel detect-tracking app.har --indicators indicators.json
+
   Detect tracking data transmissions in `app.har` and display them in table form with additional details.
 
     $ tweasel detect-tracking app.har --extended
@@ -407,7 +290,7 @@ EXAMPLES
     $ tweasel detect-tracking app.har --json
 ```
 
-_See code: [dist/commands/detect-tracking.ts](https://github.com/tweaselORG/cli/blob/v0.1.0/dist/commands/detect-tracking.ts)_
+_See code: [dist/commands/detect-tracking.ts](https://github.com/tweaselORG/cli/blob/v0.2.0/dist/commands/detect-tracking.ts)_
 
 ## `tweasel help [COMMANDS]`
 
@@ -534,7 +417,7 @@ EXAMPLES
     $ tweasel record-traffic app.apk --all-traffic
 ```
 
-_See code: [dist/commands/record-traffic.ts](https://github.com/tweaselORG/cli/blob/v0.1.0/dist/commands/record-traffic.ts)_
+_See code: [dist/commands/record-traffic.ts](https://github.com/tweaselORG/cli/blob/v0.2.0/dist/commands/record-traffic.ts)_
 <!-- commandsstop -->
 
 ## License
