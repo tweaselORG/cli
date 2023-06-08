@@ -52,7 +52,7 @@ You can run the CLI using the `tweasel` command.
 
 ## `tweasel android-emulator:create <NAME>`
 
-Create Android emulators.
+Create an Android emulator.
 
 ```
 USAGE
@@ -79,7 +79,7 @@ FLAGS
                             |android-wear|android-wear-cn>
 
 DESCRIPTION
-  Create Android emulators.
+  Create an Android emulator.
 
   You can either use the --package flag to manually specify a system image to use, or use the --api-level, --variant,
   and --architecture flags to specify the system image to use. Alternatively, they will be prompted for interactively if
@@ -194,7 +194,7 @@ USAGE
   $ tweasel autocomplete [SHELL] [-r]
 
 ARGUMENTS
-  SHELL  shell type
+  SHELL  (zsh|bash|powershell) Shell type
 
 FLAGS
   -r, --refresh-cache  Refresh cache (ignores displaying instructions)
@@ -209,10 +209,12 @@ EXAMPLES
 
   $ tweasel autocomplete zsh
 
+  $ tweasel autocomplete powershell
+
   $ tweasel autocomplete --refresh-cache
 ```
 
-_See code: [@oclif/plugin-autocomplete](https://github.com/oclif/plugin-autocomplete/blob/v2.1.8/src/commands/autocomplete/index.ts)_
+_See code: [@oclif/plugin-autocomplete](https://github.com/oclif/plugin-autocomplete/blob/v2.3.0/src/commands/autocomplete/index.ts)_
 
 ## `tweasel detect-tracking <HAR FILE>`
 

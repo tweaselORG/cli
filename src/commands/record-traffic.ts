@@ -278,7 +278,8 @@ The app can optionally be uninstalled automatically afterwards.`;
                             title: 'Starting app analysis…',
                             task: async () => {
                                 ctx.appAnalysis = await ctx.analysis.startAppAnalysis(
-                                    appIdOrFiles as `${string}.apk`[]
+                                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                                    appIdOrFiles.length === 1 ? appIdOrFiles[0]! : (appIdOrFiles as `${string}.apk`[])
                                 );
                             },
                         },
