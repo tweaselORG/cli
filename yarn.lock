@@ -1541,14 +1541,14 @@ ap@~0.2.0:
   resolved "https://registry.yarnpkg.com/ap/-/ap-0.2.0.tgz#ae0942600b29912f0d2b14ec60c45e8f330b6110"
   integrity sha512-ImdvquIuBSVpWRWhB441UjvTcZqic1RL+lTQaUKGdGEp1aiTvt/phAvY8Vvs32qya5FJBI8U+tzNBYzFDQY/lQ==
 
-appstraction@^0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/appstraction/-/appstraction-0.4.1.tgz#24154381ceea560120b74b03e83a0bad9be305ff"
-  integrity sha512-LOW+CFta1nPYcjd5LoDwivlwQVJ7ImE/1V1twEvH8gcZR06h6KUkpjr30lnwKJnVoh7LYgzV9/wA3EqCV8IOwA==
+appstraction@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/appstraction/-/appstraction-0.4.2.tgz#feb7ec7697d577654284ddd3bc559a5047203a11"
+  integrity sha512-yvWVv3s7r6TwjKVv3Ok+SWlExrr+bNAT0Xs5ehdTQtZcwT8v/hwzJmgZkYZUHeRNOzg1bPWMYa/Ije/0GoZZ5g==
   dependencies:
     "@napi-rs/lzma" "^1.1.2"
     andromatic "^1.0.0"
-    autopy "1.1.0"
+    autopy "^1.1.1"
     cross-fetch "^3.1.5"
     execa "^6.1.0"
     file-type "^18.3.0"
@@ -1691,10 +1691,10 @@ at-least-node@^1.0.0:
   resolved "https://registry.yarnpkg.com/at-least-node/-/at-least-node-1.0.0.tgz#602cd4b46e844ad4effc92a8011a3c46e0238dc2"
   integrity sha512-+q/t7Ekv1EDY2l6Gda6LLiX14rU9TV20Wa3ofeQmwPFZbOMo9DXrLbOjFaaclkXKWidIaopwAObQDqwWtGUjqg==
 
-autopy@1.1.0, autopy@^1.0.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/autopy/-/autopy-1.1.0.tgz#273a01aa566550018ba8d854b79f4d9db7842cac"
-  integrity sha512-W8WhfWexE4B1ezbK/lwu5zA2qWmXIVizlLdMNb9pEcxZowN/aOfTa7XKZsGX7fV1YkP59heCF+Pty/uhx/QUaQ==
+autopy@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/autopy/-/autopy-1.1.1.tgz#2a487f66170d3c7379c27b3d6979d42ccb63bd18"
+  integrity sha512-XcX4ZtBcT2SIW8tlHmnbrJ5LKMZcBN3bYbnlrh+401WSiNVPLn3jS2egv43ZDmX9blioJMdRvIRIssKxrvshjA==
   dependencies:
     "@mongodb-js/zstd" "^1.1.0"
     "@renovatebot/pep440" "^2.1.15"
@@ -1703,6 +1703,7 @@ autopy@1.1.0, autopy@^1.0.0:
     fs-extra "^11.1.1"
     global-cache-dir "^5.0.0"
     octokit "^2.0.14"
+    proper-lockfile "^4.1.2"
     semver "^7.5.1"
 
 available-typed-arrays@^1.0.5:
@@ -2471,15 +2472,15 @@ ctrlc-windows@^2.1.0:
   resolved "https://registry.yarnpkg.com/ctrlc-windows/-/ctrlc-windows-2.1.0.tgz#f2096a96ac1d03181e0ec808c2c8a67fdc20b300"
   integrity sha512-OrX5KI+K+2NMN91QIhYZdW7VDO2YsSdTZW494pA7Nvw/wBdU2hz+MGP006bR978zOTrG6Q8EIeJvLJmLqc6MsQ==
 
-cyanoacrylate@^0.6.1:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/cyanoacrylate/-/cyanoacrylate-0.6.1.tgz#ef8b89af1502517509383905fd4532ad7e98f31f"
-  integrity sha512-M3PgmpyVmWj87hdi+RhLXz4SLYtUdlBpxluji8Xnc1/0nsMOmL3/h8GQlHEE+cH3bWoUIlS8xBt+lfaLj7O8Bw==
+cyanoacrylate@^0.6.2:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/cyanoacrylate/-/cyanoacrylate-0.6.2.tgz#5f6b455f676acfec0f069d28cc7126b1637e0901"
+  integrity sha512-acw2XJM+r1pnWcMEF3qHAHne4jvOh3XHuPCO4MNsvWAnF6HXLfiNkbGEqsQlBn7QteqeZqx/XpOqSCX9PWptLA==
   dependencies:
     "@types/har-format" "^1.2.10"
     andromatic "^1.1.0"
-    appstraction "^0.4.1"
-    autopy "^1.0.0"
+    appstraction "^0.4.2"
+    autopy "^1.1.1"
     cross-fetch "^3.1.5"
     ctrlc-windows "^2.1.0"
     execa "^7.0.0"
@@ -3776,7 +3777,7 @@ got@^11:
     p-cancelable "^2.0.0"
     responselike "^2.0.0"
 
-graceful-fs@^4.1.10:
+graceful-fs@^4.1.10, graceful-fs@^4.2.4:
   version "4.2.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.11.tgz#4183e4e8bf08bb6e05bbb2f7d2e0c8f712ca40e3"
   integrity sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==
@@ -6308,6 +6309,15 @@ promise-retry@^2.0.1:
   dependencies:
     err-code "^2.0.2"
     retry "^0.12.0"
+
+proper-lockfile@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/proper-lockfile/-/proper-lockfile-4.1.2.tgz#c8b9de2af6b2f1601067f98e01ac66baa223141f"
+  integrity sha512-TjNPblN4BwAWMXU8s9AEz4JmQxnD1NNL7bNOY/AKUzyamc379FWASUhc/K1pL2noVb+XmZKLL68cjzLsiOAMaA==
+  dependencies:
+    graceful-fs "^4.2.4"
+    retry "^0.12.0"
+    signal-exit "^3.0.2"
 
 protobufjs@^7.2.3:
   version "7.2.3"
