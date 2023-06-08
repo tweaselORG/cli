@@ -1,6 +1,7 @@
 import { Args, Command, Flags } from '@oclif/core';
 import type { Analysis, AppAnalysis, SupportedCapability } from 'cyanoacrylate';
 import { pause, startAnalysis } from 'cyanoacrylate';
+import { exists } from 'fs-extra';
 import { writeFile } from 'fs/promises';
 import { Listr } from 'listr2';
 import { basename, dirname, extname, join } from 'path';
@@ -14,7 +15,7 @@ type ListrCtx = {
 
 export default class RecordTraffic extends Command {
     static override summary = 'Record the traffic of an Android or iOS app in HAR format.';
-    static override description = `The app will be installed and started automatically on the device or emulator. Its traffic will be then recorded until the user stops the collection or for the specified duration and saved as a HAR file at the end. You can either record the traffic of the entire system or only the specified app (default on Android, currently unsupported on iOS).
+    static override description = `The app will be started automatically on the device or emulator. Its traffic will be then recorded until the user stops the collection or for the specified duration and saved as a HAR file at the end. You can either record the traffic of the entire system or only the specified app (default on Android, currently unsupported on iOS).
 
 The app can optionally be uninstalled automatically afterwards.`;
 
@@ -26,6 +27,10 @@ The app can optionally be uninstalled automatically afterwards.`;
             description:
                 'Record the traffic of the Android app `app.apk` on a physical device. Wait for the user to stop the collection.',
             command: '<%= config.bin %> <%= command.id %> app.apk',
+        },
+        {
+            description: 'Record the traffic of the app with the ID `org.example.app` on a physical Android device.',
+            command: '<%= config.bin %> <%= command.id %> org.example.app --platform android',
         },
         {
             description:
@@ -61,7 +66,8 @@ The app can optionally be uninstalled automatically afterwards.`;
     static override flags = {
         platform: Flags.string({
             char: 'p',
-            description: 'The platform to run the app on (will be inferred from the first app file if not specified).',
+            description:
+                'The platform to run the app on (will be inferred from the first app file if not specified). Required if you provide an app ID instead of files.',
             required: false,
             options: ['android', 'ios'],
 
@@ -186,19 +192,25 @@ The app can optionally be uninstalled automatically afterwards.`;
     };
 
     static override args = {
-        '<app file(s)>': Args.string({
+        '<app ID or app file(s)>': Args.string({
             description:
-                'The path to the app to analyze (.ipa on iOS, .apk on Android). Can be specified multiple times for split APKs on Android.',
+                'The app to analyze. Can either be the bundle ID of an app that is already installed on the device or the path to the app to analyze (.ipa on iOS, .apk on Android). You can specify multiple paths for split APKs on Android.\nIf you specify an app ID, you need to provide the --platform flag.',
             required: true,
         }),
     };
 
     async run() {
         const { argv, flags } = await this.parse(RecordTraffic);
-        const appFiles = argv as `${string}.apk`[];
+        const appIdOrFiles = argv as string[];
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const platform = (flags.platform as 'ios' | 'android') ?? (appFiles[0]!.endsWith('.ipa') ? 'ios' : 'android');
+        const appIdProvided = appIdOrFiles.length === 1 && !(await exists(appIdOrFiles[0]!));
+        if (appIdProvided && !flags.platform)
+            throw new Error('You need to specify the --platform flag if you provide an app ID instead of an app file.');
+
+        const platform =
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            (flags.platform as 'ios' | 'android') ?? (appIdOrFiles[0]!.endsWith('.ipa') ? 'ios' : 'android');
         // If the platform is not specified explicitly, we unfortunately can't enforce this in the flags definition.
         if (platform === 'ios' && (!flags['ios-ip'] || !flags['ios-proxy-ip']))
             throw new Error('You need to specify the --ios-ip and --ios-proxy-ip flags for iOS.');
@@ -267,7 +279,7 @@ The app can optionally be uninstalled automatically afterwards.`;
                             task: async () => {
                                 ctx.appAnalysis = await ctx.analysis.startAppAnalysis(
                                     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                                    appFiles.length === 1 ? appFiles[0]! : appFiles
+                                    appIdOrFiles.length === 1 ? appIdOrFiles[0]! : (appIdOrFiles as `${string}.apk`[])
                                 );
                             },
                         },
@@ -276,10 +288,13 @@ The app can optionally be uninstalled automatically afterwards.`;
             },
             {
                 title: 'Installing app…',
-                task: async (ctx) => {
-                    await ctx.appAnalysis.installApp();
-                    if (flags['grant-permissions']) await ctx.appAnalysis.setAppPermissions();
-                },
+                enabled: () => !appIdProvided,
+                task: (ctx) => ctx.appAnalysis.installApp(),
+            },
+            {
+                title: 'Granting permissions…',
+                skip: () => !flags['grant-permissions'],
+                task: (ctx) => ctx.appAnalysis.setAppPermissions(),
             },
             {
                 title: 'Starting app and traffic collection…',

@@ -48,11 +48,11 @@ You can run the CLI using the `tweasel` command.
 * [`tweasel autocomplete [SHELL]`](#tweasel-autocomplete-shell)
 * [`tweasel detect-tracking <HAR FILE>`](#tweasel-detect-tracking-har-file)
 * [`tweasel help [COMMANDS]`](#tweasel-help-commands)
-* [`tweasel record-traffic <APP FILE(S)>`](#tweasel-record-traffic-app-files)
+* [`tweasel record-traffic <APP ID OR APP FILE(S)>`](#tweasel-record-traffic-app-id-or-app-files)
 
 ## `tweasel android-emulator:create <NAME>`
 
-Create Android emulators.
+Create an Android emulator.
 
 ```
 USAGE
@@ -79,7 +79,7 @@ FLAGS
                             |android-wear|android-wear-cn>
 
 DESCRIPTION
-  Create Android emulators.
+  Create an Android emulator.
 
   You can either use the --package flag to manually specify a system image to use, or use the --api-level, --variant,
   and --architecture flags to specify the system image to use. Alternatively, they will be prompted for interactively if
@@ -194,7 +194,7 @@ USAGE
   $ tweasel autocomplete [SHELL] [-r]
 
 ARGUMENTS
-  SHELL  shell type
+  SHELL  (zsh|bash|powershell) Shell type
 
 FLAGS
   -r, --refresh-cache  Refresh cache (ignores displaying instructions)
@@ -209,10 +209,12 @@ EXAMPLES
 
   $ tweasel autocomplete zsh
 
+  $ tweasel autocomplete powershell
+
   $ tweasel autocomplete --refresh-cache
 ```
 
-_See code: [@oclif/plugin-autocomplete](https://github.com/oclif/plugin-autocomplete/blob/v2.1.8/src/commands/autocomplete/index.ts)_
+_See code: [@oclif/plugin-autocomplete](https://github.com/oclif/plugin-autocomplete/blob/v2.3.0/src/commands/autocomplete/index.ts)_
 
 ## `tweasel detect-tracking <HAR FILE>`
 
@@ -292,27 +294,29 @@ DESCRIPTION
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.2.9/src/commands/help.ts)_
 
-## `tweasel record-traffic <APP FILE(S)>`
+## `tweasel record-traffic <APP ID OR APP FILE(S)>`
 
 Record the traffic of an Android or iOS app in HAR format.
 
 ```
 USAGE
-  $ tweasel record-traffic <APP FILE(S)> [-p android|ios] [-t device|emulator] [--multiple-collections | --timeout
-    <value>] [-o <value>] [--bypass-certificate-pinning] [--all-traffic] [--uninstall-app] [--stop-app]
+  $ tweasel record-traffic <APP ID OR APP FILE(S)> [-p android|ios] [-t device|emulator] [--multiple-collections |
+    --timeout <value>] [-o <value>] [--bypass-certificate-pinning] [--all-traffic] [--uninstall-app] [--stop-app]
     [--grant-permissions] [--bypass-tracking-domain-resolution-check] [--ios-ip <value>] [--ios-proxy-ip <value>]
     [--ios-root-pw <value>] [--emulator-name <value>] [--emulator-snapshot-name <value>] [--emulator-headless]
     [--emulator-no-audio] [--emulator-ephemeral]
 
 ARGUMENTS
-  <APP FILE(S)>  The path to the app to analyze (.ipa on iOS, .apk on Android). Can be specified multiple times for
-                 split APKs on Android.
+  <APP ID OR APP FILE(S)>  The app to analyze. Can either be the bundle ID of an app that is already installed on the
+                           device or the path to the app to analyze (.ipa on iOS, .apk on Android). You can specify
+                           multiple paths for split APKs on Android.
+                           If you specify an app ID, you need to provide the --platform flag.
 
 FLAGS
   -o, --output=<value>                       The path to the HAR file to save the traffic to. If not specified, a file
                                              named <app ID>.har will be created in the current directory.
   -p, --platform=<option>                    The platform to run the app on (will be inferred from the first app file if
-                                             not specified).
+                                             not specified). Required if you provide an app ID instead of files.
                                              <options: android|ios>
   -t, --run-target=<option>                  [default: device] The target to run the app on.
                                              <options: device|emulator>
@@ -352,9 +356,9 @@ IOS FLAGS
 DESCRIPTION
   Record the traffic of an Android or iOS app in HAR format.
 
-  The app will be installed and started automatically on the device or emulator. Its traffic will be then recorded until
-  the user stops the collection or for the specified duration and saved as a HAR file at the end. You can either record
-  the traffic of the entire system or only the specified app (default on Android, currently unsupported on iOS).
+  The app will be started automatically on the device or emulator. Its traffic will be then recorded until the user
+  stops the collection or for the specified duration and saved as a HAR file at the end. You can either record the
+  traffic of the entire system or only the specified app (default on Android, currently unsupported on iOS).
 
   The app can optionally be uninstalled automatically afterwards.
 
@@ -362,6 +366,10 @@ EXAMPLES
   Record the traffic of the Android app `app.apk` on a physical device. Wait for the user to stop the collection.
 
     $ tweasel record-traffic app.apk
+
+  Record the traffic of the app with the ID `org.example.app` on a physical Android device.
+
+    $ tweasel record-traffic org.example.app --platform android
 
   Record the traffic of the iOS app `app.ipa` for 60 seconds on the physical iPhone with the IP 10.0.0.2. The host
   that runs the proxy has the IP 10.0.0.2.
