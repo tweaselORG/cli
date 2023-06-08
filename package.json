@@ -60,7 +60,7 @@
         "listr": "^0.14.3",
         "listr2": "^6.4.2",
         "terminal-link": "^3.0.0",
-        "trackhar": "^0.1.0"
+        "trackhar": "^0.2.0"
     },
     "devDependencies": {
         "@baltpeter/eslint-config": "^2.1.2",

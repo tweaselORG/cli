@@ -1741,6 +1741,11 @@ base64-js@^1.0.2, base64-js@^1.3.1, base64-js@^1.5.1:
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.5.1.tgz#1b1b440160a5bf7ad40b650f095963481903930a"
   integrity sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==
 
+base64-search@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/base64-search/-/base64-search-1.0.0.tgz#8e3fe74d9999f056c26f69a3d3b7eb7b23f4c6f9"
+  integrity sha512-EHQrX/E0N/ODCli/npLoWGX5US3jWl5DEUHboNMlRDCbSWVK1dk5xcYSrcjz48bByzf1S0OI+VS4iDuY9Y85JA==
+
 bcrypt-pbkdf@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/bcrypt-pbkdf/-/bcrypt-pbkdf-1.0.2.tgz#a4301d389b6a43f9b67ff3ca11a3f6637e360e9e"
@@ -2907,6 +2912,11 @@ escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.3, escape-string-regexp@^
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha512-vbRorB5FUQWvla16U8R/qgaFIya2qGzwDrNmCZuYKrbdSUMG6I1ZCGQRefkRVhuOkIGVne7BQ35DSfo1qvJqFg==
+
+escape-string-regexp@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-5.0.0.tgz#4683126b500b61762f2dbebace1806e8be31b1c8"
+  integrity sha512-/veY75JbMK4j1yjvuUxuVsiS/hr/4iHs9FTT6cgTexxdE0Ly/glccBAkloH/DofkjRbZU3bnoj38mOmhkZ0lHw==
 
 escodegen@^1.11.1:
   version "1.14.3"
@@ -7477,13 +7487,15 @@ tr46@~0.0.3:
   resolved "https://registry.yarnpkg.com/tr46/-/tr46-0.0.3.tgz#8184fd347dac9cdc185992f3a6622e14b9d9ab6a"
   integrity sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==
 
-trackhar@^0.1.0:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/trackhar/-/trackhar-0.1.1.tgz#1397d3a97c7a7a5adcdc4b24438e21e98fcf6986"
-  integrity sha512-GEx9kAofrXQAGJqHGX28tB4COPtyz8jLD6Yo2cPUiHKdWJTAYddhauZ+1aZhk1d785V62UukEb5x3DjwkJenjw==
+trackhar@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/trackhar/-/trackhar-0.2.0.tgz#89e37cfbc7f9f206f3cd1082688386dcdc7fa583"
+  integrity sha512-rksKY08n0YEZfWPirt1PPAH4nvntl8V5OVYxNUG6Slv9AleSASajF+GBn3F7x+E/eJPuQu2fbPh3zb0RMD2DEw==
   dependencies:
     "@types/har-format" "^1.2.10"
+    base64-search "^1.0.0"
     cross-dirname "^0.1.0"
+    escape-string-regexp "^5.0.0"
     jsonpath-plus "^7.2.0"
     protobufjs "^7.2.3"
     qs "^6.11.1"

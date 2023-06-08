@@ -9,9 +9,11 @@ export default class DetectTracking extends Command {
     static override enableJsonFlag = true;
 
     static override summary = 'Detect tracking data transmissions from traffic in HAR format.';
-    static override description = `By default, this will output a human-readable table of the detected tracking data for each requests. You can use various flags to adjust the way the tables are displayed. If you instead want a machine-readable output, use the --json flag.
+    static override description = `This uses adapter-based parsing to handle requests from known tracking endpoints. You can also enable indicator matching with the --indicators flag to search for known honey data values in requests not covered by any adapter.
 
-To show requests not matched by any adapter, use the --no-hide-unmatched flag.`;
+By default, it will output a human-readable table of the detected tracking data for each requests. You can use various flags to adjust the way the tables are displayed. If you instead want a machine-readable output, use the --json flag.
+
+To show requests not matched by any adapter (or indicator matching, if enabled), use the --no-hide-unmatched flag.`;
 
     static override examples = [
         {
@@ -23,6 +25,16 @@ To show requests not matched by any adapter, use the --no-hide-unmatched flag.`;
             description:
                 'Detect tracking data transmissions in `app.har` and display them in table form, but show requests to unsupported endpoints.',
             command: '<%= config.bin %> <%= command.id %> app.har --no-hide-unmatched',
+        },
+        {
+            description:
+                'Detect tracking data transmissions in `app.har` and display them in table form. Also, try to detect tracking data transmissions in requests not matched by an adapter by searching for known honey data values.',
+            command: `<%= config.bin %> <%= command.id %> app.har --indicators '{ "localIp": ["10.0.0.2", "fd31:4159::a2a1"], "idfa": "6a1c1487-a0af-4223-b142-a0f4621d0311" }'`,
+        },
+        {
+            description:
+                'Detect tracking data transmissions in `app.har` and display them in table form. Also, try to detect tracking data transmissions in requests not matched by an adapter by searching for known honey data values read from `indicators.json`.',
+            command: '<%= config.bin %> <%= command.id %> app.har --indicators indicators.json',
         },
         {
             description:
@@ -42,6 +54,19 @@ To show requests not matched by any adapter, use the --no-hide-unmatched flag.`;
             default: true,
         }),
 
+        indicators: Flags.string({
+            description:
+                'To also detect tracking data transmissions in requests not matched by an adapter, you can provide known honey data values as a JSON object mapping from properties to values (either inline or as a path to a JSON file). These values will then be searched for in the request headers, path and body of requests without an adapter, including in encoded values.',
+            aliases: ['i'],
+            parse: async (input) => {
+                try {
+                    return JSON.parse(input);
+                } catch {
+                    return JSON.parse(await readFile(input, 'utf-8'));
+                }
+            },
+        }),
+
         ...ux.table.flags(),
     };
 
@@ -57,7 +82,8 @@ To show requests not matched by any adapter, use the --no-hide-unmatched flag.`;
         const harPath = args['<har file>'];
 
         const har = JSON.parse(await readFile(harPath, 'utf-8')) as Har;
-        const data = await process(har);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const data = await process(har, { indicatorValues: flags.indicators as any });
 
         for (let i = 0; i < data.length; i++) {
             const requestTrackingData = data[i];
@@ -70,8 +96,9 @@ To show requests not matched by any adapter, use the --no-hide-unmatched flag.`;
             if (!requestTrackingData) this.log(chalk.italic('unsupported endpoint'));
             else {
                 const adapter = requestTrackingData[0]?.adapter;
-                if (adapter)
-                    this.log('was matched by adapter: ', link(adapter, `https://trackers.tweasel.org/t/${adapter}`));
+                if (adapter === 'indicators') this.log('was matched by indicator values');
+                else if (adapter)
+                    this.log('was matched by adapter:', link(adapter, `https://trackers.tweasel.org/t/${adapter}`));
                 this.log('');
                 ux.table(
                     requestTrackingData,
