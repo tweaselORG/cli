@@ -48,7 +48,7 @@ You can run the CLI using the `tweasel` command.
 * [`tweasel autocomplete [SHELL]`](#tweasel-autocomplete-shell)
 * [`tweasel detect-tracking <HAR FILE>`](#tweasel-detect-tracking-har-file)
 * [`tweasel help [COMMANDS]`](#tweasel-help-commands)
-* [`tweasel record-traffic <APP ID OR APP FILE(S)>`](#tweasel-record-traffic-app-id-or-app-files)
+* [`tweasel record-traffic [<APP ID OR APP FILE(S)>]`](#tweasel-record-traffic-app-id-or-app-files)
 
 ## `tweasel android-emulator:create <NAME>`
 
@@ -312,13 +312,13 @@ DESCRIPTION
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.2.9/src/commands/help.ts)_
 
-## `tweasel record-traffic <APP ID OR APP FILE(S)>`
+## `tweasel record-traffic [<APP ID OR APP FILE(S)>]`
 
 Record the traffic of an Android or iOS app in HAR format.
 
 ```
 USAGE
-  $ tweasel record-traffic <APP ID OR APP FILE(S)> [-p android|ios] [-t device|emulator] [--multiple-collections |
+  $ tweasel record-traffic [<APP ID OR APP FILE(S)>] [-p android|ios] [-t device|emulator] [--multiple-collections |
     --timeout <value>] [-o <value>] [--bypass-certificate-pinning] [--all-traffic] [--uninstall-app] [--stop-app]
     [--grant-permissions] [--bypass-tracking-domain-resolution-check] [--ios-ip <value>] [--ios-proxy-ip <value>]
     [--ios-ssh-user <value>] [--ios-ssh-pw <value>] [--emulator-name <value>] [--emulator-snapshot-name <value>]
@@ -328,7 +328,8 @@ ARGUMENTS
   <APP ID OR APP FILE(S)>  The app to analyze. Can either be the bundle ID of an app that is already installed on the
                            device or the path to the app to analyze (.ipa on iOS, .apk on Android). You can specify
                            multiple paths for split APKs on Android.
-                           If you specify an app ID, you need to provide the --platform flag.
+                           Will prompt for an already installed app if not provided. If you don't specify an app path,
+                           you need to provide the --platform flag.
 
 FLAGS
   -o, --output=<value>                       The path to the HAR file to save the traffic to. If not specified, a file

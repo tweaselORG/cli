@@ -10,6 +10,7 @@ type ListrCtx = {
     analysis: Analysis<'android' | 'ios', 'emulator', SupportedCapability<'android'>[]>;
     appAnalysis: AppAnalysis<'android' | 'ios', 'emulator', SupportedCapability<'android'>[]>;
     trafficCollectionOptions: Parameters<ListrCtx['analysis']['startTrafficCollection']>[0];
+    appIdOrPath: string | `${string}.apk`[];
     currentTrafficCollectionName?: string;
 };
 
@@ -199,23 +200,23 @@ The app can optionally be uninstalled automatically afterwards.`;
     static override args = {
         '<app ID or app file(s)>': Args.string({
             description:
-                'The app to analyze. Can either be the bundle ID of an app that is already installed on the device or the path to the app to analyze (.ipa on iOS, .apk on Android). You can specify multiple paths for split APKs on Android.\nIf you specify an app ID, you need to provide the --platform flag.',
-            required: true,
+                "The app to analyze. Can either be the bundle ID of an app that is already installed on the device or the path to the app to analyze (.ipa on iOS, .apk on Android). You can specify multiple paths for split APKs on Android.\nWill prompt for an already installed app if not provided. If you don't specify an app path, you need to provide the --platform flag.",
+            required: false,
         }),
     };
 
     async run() {
         const { argv, flags } = await this.parse(RecordTraffic);
-        const appIdOrFiles = argv as string[];
+        const providedApp = argv as string[];
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const appIdProvided = appIdOrFiles.length === 1 && !(await exists(appIdOrFiles[0]!));
-        if (appIdProvided && !flags.platform)
-            throw new Error('You need to specify the --platform flag if you provide an app ID instead of an app file.');
+        const useAppId = providedApp.length === 0 || (providedApp.length === 1 && !(await exists(providedApp[0]!)));
+        if (useAppId && !flags.platform)
+            throw new Error("You need to specify the --platform flag if you don't provide an app file.");
 
         const platform =
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            (flags.platform as 'ios' | 'android') ?? (appIdOrFiles[0]!.endsWith('.ipa') ? 'ios' : 'android');
+            (flags.platform as 'ios' | 'android') ?? (providedApp[0]!.endsWith('.ipa') ? 'ios' : 'android');
         // If the platform is not specified explicitly, we unfortunately can't enforce this in the flags definition.
         if (platform === 'ios' && !flags['ios-proxy-ip'])
             throw new Error('You need to specify the --ios-proxy-ip flags for iOS.');
@@ -260,6 +261,10 @@ The app can optionally be uninstalled automatically afterwards.`;
                                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                     } as any,
                                 });
+
+                                ctx.appIdOrPath =
+                                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                                    providedApp.length === 1 ? providedApp[0]! : (providedApp as `${string}.apk`[]);
                             },
                         },
                         {
@@ -281,12 +286,27 @@ The app can optionally be uninstalled automatically afterwards.`;
                             task: () => ctx.analysis.resetDevice(),
                         },
                         {
+                            title: 'Listing apps on device…',
+                            enabled: () => providedApp.length === 0,
+                            task: async (_, task) => {
+                                const installedApps = await ctx.analysis.platform.listApps();
+                                if (installedApps.length === 0)
+                                    throw new Error(
+                                        'There are no apps installed on the device. Please install an app or specify an app file.'
+                                    );
+                                task.title = 'Waiting for app selection…';
+                                ctx.appIdOrPath = await task.prompt({
+                                    type: 'select',
+                                    message: 'Select an app to analyze:',
+                                    choices: installedApps,
+                                    required: true,
+                                });
+                            },
+                        },
+                        {
                             title: 'Starting app analysis…',
                             task: async () => {
-                                ctx.appAnalysis = await ctx.analysis.startAppAnalysis(
-                                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                                    appIdOrFiles.length === 1 ? appIdOrFiles[0]! : (appIdOrFiles as `${string}.apk`[])
-                                );
+                                ctx.appAnalysis = await ctx.analysis.startAppAnalysis(ctx.appIdOrPath);
                             },
                         },
                     ]);
@@ -294,7 +314,7 @@ The app can optionally be uninstalled automatically afterwards.`;
             },
             {
                 title: 'Installing app…',
-                enabled: () => !appIdProvided,
+                enabled: () => !useAppId,
                 task: (ctx) => ctx.appAnalysis.installApp(),
             },
             {
