@@ -1357,6 +1357,14 @@
     "@typescript-eslint/types" "5.59.9"
     eslint-visitor-keys "^3.3.0"
 
+"@viperproject/locate-java-home@^1.1.12":
+  version "1.1.12"
+  resolved "https://registry.yarnpkg.com/@viperproject/locate-java-home/-/locate-java-home-1.1.12.tgz#78028c9839868135cc667dd8c743a61401863189"
+  integrity sha512-Rlvdp+k9aoiFD35UgLW41rgt66hcs1FacwZT/JxuW7PBcmDVpAyENN/AzETtIPcgQCl+cF4Xf4YFB/pQQsYmXQ==
+  dependencies:
+    async "^3.2.3"
+    semver "^7.3.5"
+
 abbrev@1, abbrev@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
@@ -1451,6 +1459,22 @@ andromatic@^1.0.0, andromatic@^1.1.0:
     decompress "^4.2.1"
     execa "^7.1.1"
     find-java-home "^2.0.0"
+    fs-extra "^11.1.1"
+    global-cache-dir "^4.4.0"
+    globby "^13.1.4"
+    node-java-connector "^1.1.1"
+    semver "^7.5.0"
+    yargs "^17.7.2"
+
+andromatic@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/andromatic/-/andromatic-1.1.1.tgz#9fcdb1ff4159c5c36f60730f1311dc7933a41a52"
+  integrity sha512-qMjt9r0mNUJIyB40mr4YWaoJNvf99Y7zBbZUXt1RH/55yunT0waa+cPRAffKlDubtApYdqGBfUrVVwgUEwezdg==
+  dependencies:
+    "@viperproject/locate-java-home" "^1.1.12"
+    cross-fetch "^3.1.5"
+    decompress "^4.2.1"
+    execa "^7.1.1"
     fs-extra "^11.1.1"
     global-cache-dir "^4.4.0"
     globby "^13.1.4"
