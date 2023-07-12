@@ -25,18 +25,19 @@
         "/oclif.manifest.json"
     ],
     "scripts": {
-        "build": "shx rm -rf dist && tsc -b && oclif manifest ",
+        "build": "shx rm -rf dist && tsc -b",
         "dev": "./bin/dev.js",
         "fix": "yarn eslint . --ignore-path .gitignore --ext .js,.jsx,.ts,.tsx --fix",
         "lint": "tsc --noEmit && eslint . --ignore-path .gitignore --ext .js,.jsx,.ts,.tsx && git diff --check",
-        "prepack": "yarn build && oclif readme",
+        "prepack": "yarn build && oclif manifest && oclif readme",
+        "postpack": "shx rm -f oclif.manifest.json",
         "test": "echo 'TODO: No tests specified yet.'",
         "posttest": "yarn lint",
         "version": "oclif readme && git add README.md"
     },
     "husky": {
         "hooks": {
-            "pre-commit": "lint-staged && tsc --noEmit && oclif readme && git add README.md"
+            "pre-commit": "lint-staged && yarn build && oclif readme && git add README.md"
         }
     },
     "lint-staged": {
