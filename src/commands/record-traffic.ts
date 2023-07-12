@@ -274,6 +274,9 @@ The app can optionally be uninstalled automatically afterwards.`;
                         },
                         {
                             title: 'Waiting for device…',
+                            // If an emulator name is set, we start the emulator in `ensureDevice` and wait there.
+                            // (fixed in https://github.com/tweaselORG/cli/pull/31)
+                            enabled: () => !flags['emulator-name'],
                             task: async () => ctx.analysis.platform.waitForDevice(),
                         },
                         {
