@@ -52,7 +52,7 @@
         "@oclif/core": "^2",
         "@oclif/plugin-autocomplete": "^2.1.8",
         "@oclif/plugin-help": "^5",
-        "andromatic": "^1.1.0",
+        "andromatic": "^1.1.1",
         "chalk": "^5.2.0",
         "cyanoacrylate": "^0.6.3",
         "enquirer": "^2.3.6",
