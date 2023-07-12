@@ -321,8 +321,8 @@ USAGE
   $ tweasel record-traffic <APP ID OR APP FILE(S)> [-p android|ios] [-t device|emulator] [--multiple-collections |
     --timeout <value>] [-o <value>] [--bypass-certificate-pinning] [--all-traffic] [--uninstall-app] [--stop-app]
     [--grant-permissions] [--bypass-tracking-domain-resolution-check] [--ios-ip <value>] [--ios-proxy-ip <value>]
-    [--ios-root-pw <value>] [--emulator-name <value>] [--emulator-snapshot-name <value>] [--emulator-headless]
-    [--emulator-no-audio] [--emulator-ephemeral]
+    [--ios-ssh-user <value>] [--ios-ssh-pw <value>] [--emulator-name <value>] [--emulator-snapshot-name <value>]
+    [--emulator-headless] [--emulator-no-audio] [--emulator-ephemeral]
 
 ARGUMENTS
   <APP ID OR APP FILE(S)>  The app to analyze. Can either be the bundle ID of an app that is already installed on the
@@ -367,9 +367,11 @@ EMULATOR FLAGS
   --emulator-snapshot-name=<value>  The name of a snapshot to reset the emulator to before starting.
 
 IOS FLAGS
-  --ios-ip=<value>        The IP address of the iOS device.
+  --ios-ip=<value>        The IP address of the iOS device. If not specified, the connection will be forwarded via USB.
   --ios-proxy-ip=<value>  The IP address of the host running the proxy to set up on the iOS device.
-  --ios-root-pw=<value>   [default: alpine] The password of the root user on the iOS device.
+  --ios-ssh-pw=<value>    [default: alpine] The password of the specified user on the iOS device.
+  --ios-ssh-user=<value>  [default: mobile] Which user to use when connecting to the iPhone via SSH. Make sure it can
+                          log in via SSH.
 
 DESCRIPTION
   Record the traffic of an Android or iOS app in HAR format.

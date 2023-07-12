@@ -74,10 +74,7 @@ The app can optionally be uninstalled automatically afterwards.`;
             relationships: [
                 {
                     type: 'all',
-                    flags: [
-                        { name: 'ios-ip', when: async (f) => f['platform'] === 'ios' },
-                        { name: 'ios-proxy-ip', when: async (f) => f['platform'] === 'ios' },
-                    ],
+                    flags: [{ name: 'ios-proxy-ip', when: async (f) => f['platform'] === 'ios' }],
                 },
             ],
         }),
@@ -145,7 +142,8 @@ The app can optionally be uninstalled automatically afterwards.`;
         }),
 
         'ios-ip': Flags.string({
-            description: 'The IP address of the iOS device.',
+            description:
+                'The IP address of the iOS device. If not specified, the connection will be forwarded via USB.',
             helpGroup: 'iOS',
         }),
 
@@ -154,8 +152,15 @@ The app can optionally be uninstalled automatically afterwards.`;
             helpGroup: 'iOS',
         }),
 
-        'ios-root-pw': Flags.string({
-            description: 'The password of the root user on the iOS device.',
+        'ios-ssh-user': Flags.string({
+            description: 'Which user to use when connecting to the iPhone via SSH. Make sure it can log in via SSH.',
+            helpGroup: 'iOS',
+            default: 'mobile',
+            values: ['mobile', 'root'],
+        }),
+
+        'ios-ssh-pw': Flags.string({
+            description: 'The password of the specified user on the iOS device.',
             helpGroup: 'iOS',
             default: 'alpine',
         }),
@@ -212,8 +217,8 @@ The app can optionally be uninstalled automatically afterwards.`;
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             (flags.platform as 'ios' | 'android') ?? (appIdOrFiles[0]!.endsWith('.ipa') ? 'ios' : 'android');
         // If the platform is not specified explicitly, we unfortunately can't enforce this in the flags definition.
-        if (platform === 'ios' && (!flags['ios-ip'] || !flags['ios-proxy-ip']))
-            throw new Error('You need to specify the --ios-ip and --ios-proxy-ip flags for iOS.');
+        if (platform === 'ios' && !flags['ios-proxy-ip'])
+            throw new Error('You need to specify the --ios-proxy-ip flags for iOS.');
 
         await new Listr<ListrCtx>([
             {
@@ -248,7 +253,8 @@ The app can optionally be uninstalled automatically afterwards.`;
                                         snapshotName: flags['emulator-snapshot-name'],
 
                                         // iOS
-                                        rootPw: flags['ios-root-pw'],
+                                        username: flags['ios-ssh-user'],
+                                        password: flags['ios-ssh-pw'],
                                         ip: flags['ios-ip'],
                                         proxyIp: flags['ios-proxy-ip'],
                                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
