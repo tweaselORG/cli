@@ -1,6 +1,6 @@
 {
     "name": "tweasel-cli",
-    "version": "0.2.3",
+    "version": "1.0.0",
     "description": "Command-line tool for the libraries of the tweasel project.",
     "keywords": [
         "oclif"
