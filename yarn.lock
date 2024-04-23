@@ -1549,10 +1549,10 @@ ap@~0.2.0:
   resolved "https://registry.yarnpkg.com/ap/-/ap-0.2.0.tgz#ae0942600b29912f0d2b14ec60c45e8f330b6110"
   integrity sha512-ImdvquIuBSVpWRWhB441UjvTcZqic1RL+lTQaUKGdGEp1aiTvt/phAvY8Vvs32qya5FJBI8U+tzNBYzFDQY/lQ==
 
-appstraction@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/appstraction/-/appstraction-1.0.0.tgz#76d2fcbb5e5b9ab3e3c3922e2dba393ccbf8d446"
-  integrity sha512-kqPFRCM59vRHJO3DWBkR3Vm4C9BYLXwENqfUapii7Wb5VBdfB+dgVqtzGL3LVV4f3QK8rNdVlhYMDG0QBVq2EA==
+appstraction@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/appstraction/-/appstraction-1.0.1.tgz#ceecc98c20d6ba95ce7dc11b46c61bc0b59fa528"
+  integrity sha512-4xeYYpCrXV9bW+92Oqfk25+7dRsqh4njvwgkIlQ657yoJuIeTJ7YDTLM/NBXEtpZBpJBOB3aM8BKgH4KFcUYfA==
   dependencies:
     "@napi-rs/lzma" "^1.1.2"
     andromatic "^1.1.1"
@@ -2481,14 +2481,14 @@ ctrlc-windows@^2.1.0:
   resolved "https://registry.yarnpkg.com/ctrlc-windows/-/ctrlc-windows-2.1.0.tgz#f2096a96ac1d03181e0ec808c2c8a67fdc20b300"
   integrity sha512-OrX5KI+K+2NMN91QIhYZdW7VDO2YsSdTZW494pA7Nvw/wBdU2hz+MGP006bR978zOTrG6Q8EIeJvLJmLqc6MsQ==
 
-cyanoacrylate@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/cyanoacrylate/-/cyanoacrylate-1.0.0.tgz#5ed7721d463bda618345d661cc8694b84bf32c57"
-  integrity sha512-w63eEgh8881OEYpMDGAyDNc7EPoQq4HlxWjiPPXtHjKTvFdQJ0qpTfivyHRM6IZMPjefLhkUh3gHyCwsof8Meg==
+cyanoacrylate@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/cyanoacrylate/-/cyanoacrylate-1.0.1.tgz#5ff06249881b06d64c6977e045328d784b3c630b"
+  integrity sha512-SMwUxkCeewGTUsUZ3nH7pwvqVP4J6v+MODT3ZNYyiEvR6PhxUIc53D40owbqoRx6ZIy2Zr8Jej1D6T5Bon65LQ==
   dependencies:
     "@types/har-format" "^1.2.10"
     andromatic "^1.1.1"
-    appstraction "^1.0.0"
+    appstraction "^1.0.1"
     autopy "^1.1.1"
     cross-fetch "^3.1.5"
     ctrlc-windows "^2.1.0"
@@ -3301,6 +3301,11 @@ fd-slicer@~1.1.0:
   integrity sha512-cE1qsB/VwyQozZ+q1dGxR8LBYNZeofhEdUNGSMbQD3Gw2lAzX9Zb3uIU6Ebc/Fmyjo9AWWfnn0AUCHqtevs/8g==
   dependencies:
     pend "~1.2.0"
+
+fflate@^0.8.0:
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/fflate/-/fflate-0.8.2.tgz#fc8631f5347812ad6028bbe4a2308b2792aa1dea"
+  integrity sha512-cPJU47OaAoCbg0pBvzsgpTPhmhqI5eJjh/JIu8tPj5q+T7iLvW/JAYUqmE7KOB4R1ZyEhzBaIQpQpardBF5z8A==
 
 figures@^1.7.0:
   version "1.7.0"
@@ -7503,15 +7508,16 @@ tr46@~0.0.3:
   resolved "https://registry.yarnpkg.com/tr46/-/tr46-0.0.3.tgz#8184fd347dac9cdc185992f3a6622e14b9d9ab6a"
   integrity sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==
 
-trackhar@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/trackhar/-/trackhar-0.2.0.tgz#89e37cfbc7f9f206f3cd1082688386dcdc7fa583"
-  integrity sha512-rksKY08n0YEZfWPirt1PPAH4nvntl8V5OVYxNUG6Slv9AleSASajF+GBn3F7x+E/eJPuQu2fbPh3zb0RMD2DEw==
+trackhar@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/trackhar/-/trackhar-0.3.1.tgz#9a306972ab7c25f4f8fc1e5b6300109719c34757"
+  integrity sha512-hx9NHYlp0GX+qjbTVKYQ1cV9yOsKp3+CMaLHHeFgqNPd6v2LYA6BRG4pNIh1uoaLKYr+KrgFegUyhoNm/GKAsQ==
   dependencies:
     "@types/har-format" "^1.2.10"
     base64-search "^1.0.0"
     cross-dirname "^0.1.0"
     escape-string-regexp "^5.0.0"
+    fflate "^0.8.0"
     jsonpath-plus "^7.2.0"
     protobufjs "^7.2.3"
     qs "^6.11.1"
