@@ -2481,7 +2481,7 @@ ctrlc-windows@^2.1.0:
   resolved "https://registry.yarnpkg.com/ctrlc-windows/-/ctrlc-windows-2.1.0.tgz#f2096a96ac1d03181e0ec808c2c8a67fdc20b300"
   integrity sha512-OrX5KI+K+2NMN91QIhYZdW7VDO2YsSdTZW494pA7Nvw/wBdU2hz+MGP006bR978zOTrG6Q8EIeJvLJmLqc6MsQ==
 
-cyanoacrylate@^1.0.1:
+cyanoacrylate@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/cyanoacrylate/-/cyanoacrylate-1.0.1.tgz#5ff06249881b06d64c6977e045328d784b3c630b"
   integrity sha512-SMwUxkCeewGTUsUZ3nH7pwvqVP4J6v+MODT3ZNYyiEvR6PhxUIc53D40owbqoRx6ZIy2Zr8Jej1D6T5Bon65LQ==
