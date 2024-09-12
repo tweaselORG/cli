@@ -55,7 +55,7 @@
         "@oclif/plugin-help": "^5",
         "andromatic": "^1.1.1",
         "chalk": "^5.2.0",
-        "cyanoacrylate": "1.0.1",
+        "cyanoacrylate": "1.2.1",
         "enquirer": "^2.3.6",
         "fs-extra": "^11.1.1",
         "listr": "^0.14.3",
