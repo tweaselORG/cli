@@ -48,6 +48,7 @@ You can run the CLI using the `tweasel` command.
 * [`tweasel autocomplete [SHELL]`](#tweasel-autocomplete-shell)
 * [`tweasel detect-tracking <HAR FILE>`](#tweasel-detect-tracking-har-file)
 * [`tweasel help [COMMANDS]`](#tweasel-help-commands)
+* [`tweasel prepare-device`](#tweasel-prepare-device)
 * [`tweasel record-traffic [<APP ID OR APP FILE(S)>]`](#tweasel-record-traffic-app-id-or-app-files)
 
 ## `tweasel android-emulator:create <NAME>`
@@ -311,6 +312,104 @@ DESCRIPTION
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.2.9/src/commands/help.ts)_
+
+## `tweasel prepare-device`
+
+Prepare a device for use with Tweasel tools and optionally place honey data.
+
+```
+USAGE
+  $ tweasel prepare-device -p android|ios [-t device|emulator] [--honey-data <value>] [--ios-ip <value>]
+    [--ios-ssh-user <value>] [--ios-ssh-pw <value>] [--emulator-name <value>]
+
+FLAGS
+  -p, --platform=<option>    (required) The platform of the device.
+                             <options: android|ios>
+  -t, --run-target=<option>  [default: device] The device type (physical device or emulator). Only needs to be provided
+                             if you want an emulator to be started automatically.
+                             <options: device|emulator>
+  --honey-data=<value>       You can provide honey data values as JSON in the format described above (either inline or
+                             as a path to a JSON file) that will then be placed on the device.
+
+EMULATOR FLAGS
+  --emulator-name=<value>  The name of the emulator to start. If you don't provide this, you need to start the emulator
+                           yourself.
+
+IOS FLAGS
+  --ios-ip=<value>        The IP address of the iOS device. If not specified, the connection will be forwarded via USB.
+  --ios-ssh-pw=<value>    [default: alpine] The password of the specified user on the iOS device.
+  --ios-ssh-user=<value>  [default: mobile] Which user to use when connecting to the iPhone via SSH. Make sure it can
+                          log in via SSH.
+
+DESCRIPTION
+  Prepare a device for use with Tweasel tools and optionally place honey data.
+
+  The device or emulator will be configured for traffic collection using Tweasel tools and necessary dependencies will
+  be installed on the device. This preparation would otherwise happen at the start of an analysis, so this command is
+  especially useful when preparing emulator snapshots.
+
+  If you pass a JSON with honey data values in the following format (all properties are optional), they will be placed
+  on the device:
+
+  {
+  "deviceName": "Kim’s iPhone 3G",
+  "clipboard": "honeypotdontcopy",
+  "calendarEvents": [
+  {
+  "title": "Secret meeting",
+  "startDate": "2024-01-01T12:00:00",
+  "endDate": "2024-01-01T12:12:00"
+  }
+  ],
+  "contacts": [
+  {
+  "firstName": "Kim",
+  "lastName": "Doe",
+  "email": "kim.doe@example.org",
+  "phoneNumber": "0123456789",
+  }
+  ]
+  }
+
+
+EXAMPLES
+  Record the traffic of the Android app `app.apk` on a physical device. Wait for the user to stop the collection.
+
+    $ tweasel prepare-device app.apk
+
+  Record the traffic of the app with the ID `org.example.app` on a physical Android device.
+
+    $ tweasel prepare-device org.example.app --platform android
+
+  Record the traffic of the iOS app `app.ipa` for 60 seconds on the physical iPhone with the IP 10.0.0.2. The host
+  that runs the proxy has the IP 10.0.0.2.
+
+    $ tweasel prepare-device app.ipa --timeout 60 --ios-ip 10.0.0.3 --ios-proxy-ip 10.0.0.2
+
+  Record the traffic of `app.apk` in multiple chunks. Wait for the user to start and stop each chunk. Each chunk is
+  saved as a separate HAR file, with the chunk name appended to filename.
+
+    $ tweasel prepare-device app.apk --multiple-collections
+
+  Record the traffic of an Android app consisting of multiple split APKs.
+
+    $ tweasel prepare-device app.apk config.en.app.apk config.xxhdpi.app.apk
+
+  Record the traffic of `app.apk` for 30 seconds in the emulator called `my-emulator` and start that emulator
+  automatically.
+
+    $ tweasel prepare-device app.apk -t emulator --emulator-name my-emulator --timeout 30
+
+  Record the traffic of `app.apk` for 10 seconds and save the HAR file to `traffic.har` in your home directory.
+
+    $ tweasel prepare-device app.apk -o ~/traffic.har --timeout 10
+
+  Install and run `app.apk` but record the traffic of the entire system.
+
+    $ tweasel prepare-device app.apk --all-traffic
+```
+
+_See code: [dist/commands/prepare-device.ts](https://github.com/tweaselORG/cli/blob/v1.0.1/dist/commands/prepare-device.ts)_
 
 ## `tweasel record-traffic [<APP ID OR APP FILE(S)>]`
 

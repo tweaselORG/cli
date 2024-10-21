@@ -1,0 +1,10 @@
+{
+  "version": "v1",
+  "packages": {
+    "cyanoacrylate": {
+      "signature": "d895085d1ad247ac4c605dd7cc6d91f5",
+      "file": true,
+      "replaced": "/home/benni/coding/JS/tweasel/cyanoacrylate/cyanoacrylate-v1.5.0.tgz"
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+    "name": "cyanoacrylate",
+    "version": "1.5.0",
+    "description": "Toolkit for large-scale automated traffic analysis of mobile apps on Android and iOS.",
+    "bugs": "https://github.com/tweaselORG/cyanoacrylate/issues",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/tweaselORG/cyanoacrylate.git"
+    },
+    "license": "MIT",
+    "contributors": [
+        {
+            "name": "Benjamin Altpeter",
+            "email": "hi@bn.al",
+            "url": "https://benjamin-altpeter.de"
+        },
+        {
+            "name": "Lorenz Sieben",
+            "email": "me@lorenz-sieben.com",
+            "url": "https://lorenz-sieben.com"
+        }
+    ],
+    "type": "module",
+    "main": "dist/index.js",
+    "source": "src/index.ts",
+    "types": "dist/index.d.ts",
+    "files": [
+        "/dist",
+        "requirements.txt",
+        "/scripts",
+        "/src/ipcEventsAddon.py"
+    ],
+    "scripts": {
+        "build": "parcel build",
+        "fix": "yarn eslint . --ignore-path .gitignore --ext .js,.jsx,.ts,.tsx --fix",
+        "postinstall": "node scripts/postinstall.js",
+        "lint": "tsc && eslint . --ignore-path .gitignore --ext .js,.jsx,.ts,.tsx && git diff --check",
+        "prepack": "rm -rf dist && yarn build && yarn typedoc",
+        "test": "echo 'TODO: No tests specified yet.'",
+        "watch": "parcel watch"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged && tsc && typedoc && git add docs"
+        }
+    },
+    "lint-staged": {
+        "*.{ts,js,tsx,jsx,css,scss,json}": [
+            "prettier --write"
+        ],
+        "*.{ts,js,tsx,jsx}": [
+            "eslint --fix"
+        ]
+    },
+    "prettier": "@baltpeter/prettier-config",
+    "dependencies": {
+        "@types/har-format": "^1.2.10",
+        "andromatic": "^1.1.1",
+        "appstraction": "^1.2.0",
+        "autopy": "^1.1.1",
+        "cross-fetch": "^3.1.5",
+        "ctrlc-windows": "^2.1.0",
+        "execa": "^7.0.0",
+        "global-cache-dir": "^4.4.0",
+        "js-ini": "^1.6.0",
+        "p-timeout": "^6.1.1",
+        "tempy": "^3.0.0"
+    },
+    "engines": {
+        "node": "~18"
+    },
+    "yalcSig": "d895085d1ad247ac4c605dd7cc6d91f5"
+}

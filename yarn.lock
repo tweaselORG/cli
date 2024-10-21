@@ -1549,10 +1549,10 @@ ap@~0.2.0:
   resolved "https://registry.yarnpkg.com/ap/-/ap-0.2.0.tgz#ae0942600b29912f0d2b14ec60c45e8f330b6110"
   integrity sha512-ImdvquIuBSVpWRWhB441UjvTcZqic1RL+lTQaUKGdGEp1aiTvt/phAvY8Vvs32qya5FJBI8U+tzNBYzFDQY/lQ==
 
-appstraction@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/appstraction/-/appstraction-1.0.1.tgz#ceecc98c20d6ba95ce7dc11b46c61bc0b59fa528"
-  integrity sha512-4xeYYpCrXV9bW+92Oqfk25+7dRsqh4njvwgkIlQ657yoJuIeTJ7YDTLM/NBXEtpZBpJBOB3aM8BKgH4KFcUYfA==
+appstraction@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/appstraction/-/appstraction-1.2.0.tgz#9c47c861109ee7e193e4a38d69e24fb3e5d18081"
+  integrity sha512-Ow7Sa0O06Y5LltgIWwKhz4lXkgmZu4q9T1jhCkdjx97Q+HCFLVhhbwIsSwdE47l5VA/oA8ZeT+U7Jn1x2OLATw==
   dependencies:
     "@napi-rs/lzma" "^1.1.2"
     andromatic "^1.1.1"
@@ -1562,6 +1562,7 @@ appstraction@^1.0.1:
     file-type "^18.3.0"
     frida "^16.0.8"
     fs-extra "^11.1.0"
+    hasha "^6.0.0"
     ipa-extract-info "^1.2.6"
     node-ssh "^13.1.0"
     p-retry "^5.1.2"
@@ -2481,19 +2482,26 @@ ctrlc-windows@^2.1.0:
   resolved "https://registry.yarnpkg.com/ctrlc-windows/-/ctrlc-windows-2.1.0.tgz#f2096a96ac1d03181e0ec808c2c8a67fdc20b300"
   integrity sha512-OrX5KI+K+2NMN91QIhYZdW7VDO2YsSdTZW494pA7Nvw/wBdU2hz+MGP006bR978zOTrG6Q8EIeJvLJmLqc6MsQ==
 
+<<<<<<< Updated upstream
 cyanoacrylate@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/cyanoacrylate/-/cyanoacrylate-1.0.1.tgz#5ff06249881b06d64c6977e045328d784b3c630b"
   integrity sha512-SMwUxkCeewGTUsUZ3nH7pwvqVP4J6v+MODT3ZNYyiEvR6PhxUIc53D40owbqoRx6ZIy2Zr8Jej1D6T5Bon65LQ==
+=======
+"cyanoacrylate@file:../cyanoacrylate/cyanoacrylate-v1.5.0.tgz":
+  version "1.5.0"
+  resolved "file:../cyanoacrylate/cyanoacrylate-v1.5.0.tgz#2e56818f36c15ff85bf3e2d72784af9a492ef488"
+>>>>>>> Stashed changes
   dependencies:
     "@types/har-format" "^1.2.10"
     andromatic "^1.1.1"
-    appstraction "^1.0.1"
+    appstraction "^1.2.0"
     autopy "^1.1.1"
     cross-fetch "^3.1.5"
     ctrlc-windows "^2.1.0"
     execa "^7.0.0"
     global-cache-dir "^4.4.0"
+    import-meta-resolve "^4.1.0"
     js-ini "^1.6.0"
     p-timeout "^6.1.1"
     tempy "^3.0.0"
@@ -3878,6 +3886,14 @@ has@^1.0.1, has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
+hasha@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/hasha/-/hasha-6.0.0.tgz#bdf1231ae40b406121c09c13705e5b38c1bb607c"
+  integrity sha512-MLydoyGp9QJcjlhE5lsLHXYpWayjjWqkavzju2ZWD2tYa1CgmML1K1gWAu22BLFa2eZ0OfvJ/DlfoVjaD54U2Q==
+  dependencies:
+    is-stream "^3.0.0"
+    type-fest "^4.7.1"
+
 hosted-git-info@^2.1.4:
   version "2.8.9"
   resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.8.9.tgz#dffc0bf9a21c02209090f2aa69429e1414daf3f9"
@@ -4041,6 +4057,11 @@ import-fresh@^3.0.0, import-fresh@^3.2.1:
   dependencies:
     parent-module "^1.0.0"
     resolve-from "^4.0.0"
+
+import-meta-resolve@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/import-meta-resolve/-/import-meta-resolve-4.1.0.tgz#f9db8bead9fafa61adb811db77a2bf22c5399706"
+  integrity sha512-I6fiaX09Xivtk+THaMfAwnA3MVA5Big1WHF1Dfx9hFuvNIWpXnorlkzhcQf6ehrqQiiZECRt1poOAkPmer3ruw==
 
 imurmurhash@^0.1.4:
   version "0.1.4"
@@ -7650,6 +7671,11 @@ type-fest@^2.12.2:
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-2.19.0.tgz#88068015bb33036a598b952e55e9311a60fd3a9b"
   integrity sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==
 
+type-fest@^4.7.1:
+  version "4.20.1"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-4.20.1.tgz#d97bb1e923bf524e5b4b43421d586760fb2ee8be"
+  integrity sha512-R6wDsVsoS9xYOpy8vgeBlqpdOyzJ12HNfQhC/aAKWM3YoCV9TtunJzh/QpkMgeDhkoynDcw5f1y+qF9yc/HHyg==
+
 typed-array-length@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/typed-array-length/-/typed-array-length-1.0.4.tgz#89d83785e5c4098bec72e08b319651f0eac9c1bb"
@@ -8228,3 +8254,8 @@ zipjs-browserify@^1.0.0:
   dependencies:
     brfs "^1.4.1"
     browserify-shim "^3.8.11"
+
+zod@^3.23.8:
+  version "3.23.8"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.23.8.tgz#e37b957b5d52079769fb8097099b592f0ef4067d"
+  integrity sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==
