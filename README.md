@@ -107,7 +107,7 @@ EXAMPLES
     $ tweasel android-emulator:create test --force
 ```
 
-_See code: [dist/commands/android-emulator/create.ts](https://github.com/tweaselORG/cli/blob/v1.0.2/dist/commands/android-emulator/create.ts)_
+_See code: [dist/commands/android-emulator/create.ts](https://github.com/tweaselORG/cli/blob/v1.0.3/dist/commands/android-emulator/create.ts)_
 
 ## `tweasel android-emulator:delete <NAME>`
 
@@ -126,7 +126,7 @@ EXAMPLES
     $ tweasel android-emulator:delete my-emulator
 ```
 
-_See code: [dist/commands/android-emulator/delete.ts](https://github.com/tweaselORG/cli/blob/v1.0.2/dist/commands/android-emulator/delete.ts)_
+_See code: [dist/commands/android-emulator/delete.ts](https://github.com/tweaselORG/cli/blob/v1.0.3/dist/commands/android-emulator/delete.ts)_
 
 ## `tweasel android-emulator:snapshot:create <NAME>`
 
@@ -145,7 +145,7 @@ EXAMPLES
     $ tweasel android-emulator:snapshot:create clean
 ```
 
-_See code: [dist/commands/android-emulator/snapshot/create.ts](https://github.com/tweaselORG/cli/blob/v1.0.2/dist/commands/android-emulator/snapshot/create.ts)_
+_See code: [dist/commands/android-emulator/snapshot/create.ts](https://github.com/tweaselORG/cli/blob/v1.0.3/dist/commands/android-emulator/snapshot/create.ts)_
 
 ## `tweasel android-emulator:snapshot:delete <NAME>`
 
@@ -164,7 +164,7 @@ EXAMPLES
     $ tweasel android-emulator:snapshot:delete clean
 ```
 
-_See code: [dist/commands/android-emulator/snapshot/delete.ts](https://github.com/tweaselORG/cli/blob/v1.0.2/dist/commands/android-emulator/snapshot/delete.ts)_
+_See code: [dist/commands/android-emulator/snapshot/delete.ts](https://github.com/tweaselORG/cli/blob/v1.0.3/dist/commands/android-emulator/snapshot/delete.ts)_
 
 ## `tweasel android-emulator:start <NAME>`
 
@@ -183,7 +183,7 @@ EXAMPLES
     $ tweasel android-emulator:start my-emulator
 ```
 
-_See code: [dist/commands/android-emulator/start.ts](https://github.com/tweaselORG/cli/blob/v1.0.2/dist/commands/android-emulator/start.ts)_
+_See code: [dist/commands/android-emulator/start.ts](https://github.com/tweaselORG/cli/blob/v1.0.3/dist/commands/android-emulator/start.ts)_
 
 ## `tweasel autocomplete [SHELL]`
 
@@ -290,7 +290,7 @@ EXAMPLES
     $ tweasel detect-tracking app.har --json
 ```
 
-_See code: [dist/commands/detect-tracking.ts](https://github.com/tweaselORG/cli/blob/v1.0.2/dist/commands/detect-tracking.ts)_
+_See code: [dist/commands/detect-tracking.ts](https://github.com/tweaselORG/cli/blob/v1.0.3/dist/commands/detect-tracking.ts)_
 
 ## `tweasel help [COMMANDS]`
 
@@ -420,7 +420,7 @@ EXAMPLES
     $ tweasel record-traffic app.apk --all-traffic
 ```
 
-_See code: [dist/commands/record-traffic.ts](https://github.com/tweaselORG/cli/blob/v1.0.2/dist/commands/record-traffic.ts)_
+_See code: [dist/commands/record-traffic.ts](https://github.com/tweaselORG/cli/blob/v1.0.3/dist/commands/record-traffic.ts)_
 <!-- commandsstop -->
 
 ## License
